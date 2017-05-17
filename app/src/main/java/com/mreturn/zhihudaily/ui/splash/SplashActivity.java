@@ -11,10 +11,17 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.mreturn.zhihudaily.app.Constant;
 import com.mreturn.zhihudaily.ui.main.MainActivity;
 import com.mreturn.zhihudaily.Presenter.SplashPresenter;
 import com.mreturn.zhihudaily.R;
 import com.mreturn.zhihudaily.model.SplashData;
+import com.mreturn.zhihudaily.utils.CommonUtils;
+import com.mreturn.zhihudaily.utils.SpUtils;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,8 +75,23 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
     }
 
     @Override
-    public void getSplashDatasuccess(SplashData splashData) {
-
+    public void getSplashDatasuccess(final SplashData splashData) {
+        if (splashData != null && splashData.getCreatives().size()>0){
+            final SplashData.CreativesBean creativesBean = splashData.getCreatives().get(0);
+            Glide.with(this)
+                    .load(creativesBean.getUrl())
+                    .downloadOnly(new SimpleTarget<File>() {
+                        @Override
+                        public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
+                            //缓存版权信息
+                            SpUtils.put(SplashActivity.this, Constant.KEY_START_IMG_TEXT,creativesBean.getImpression_tracks().get(0));
+                            //保存当前日期
+                            SpUtils.put(SplashActivity.this,Constant.KEY_TODAY, CommonUtils.getToday());
+                            //缓存图片
+                            SpUtils.put(SplashActivity.this,Constant.SPLASH_IMG_PATH,resource.getAbsolutePath());
+                        }
+                    });
+        }
     }
 
     @Override

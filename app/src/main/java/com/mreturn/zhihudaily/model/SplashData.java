@@ -20,7 +20,7 @@ public class SplashData {
         this.creatives = creatives;
     }
 
-    private static class CreativesBean {
+    public static class CreativesBean {
         /**
          * url : https://pic2.zhimg.com/v2-337d33a455bd5512f8445e1acbbbb15d.jpg
          * start_time : 1494926866

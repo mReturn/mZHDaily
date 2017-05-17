@@ -42,6 +42,7 @@ public class SplashPresenter extends BasePresenter {
 
             @Override
             public void onError(Throwable e) {
+                splashView.showImg(R.drawable.splash);
             }
 
             @Override
