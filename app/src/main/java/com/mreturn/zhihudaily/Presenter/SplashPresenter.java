@@ -7,7 +7,7 @@ import com.mreturn.zhihudaily.R;
 import com.mreturn.zhihudaily.api.AppClient;
 import com.mreturn.zhihudaily.app.Constant;
 import com.mreturn.zhihudaily.model.SplashData;
-import com.mreturn.zhihudaily.ui.view.SplashView;
+import com.mreturn.zhihudaily.ui.splash.SplashView;
 import com.mreturn.zhihudaily.utils.NetUtils;
 import com.mreturn.zhihudaily.utils.SpUtils;
 import com.mreturn.zhihudaily.utils.TransformUtils;

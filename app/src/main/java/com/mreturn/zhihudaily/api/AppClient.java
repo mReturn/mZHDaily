@@ -1,6 +1,6 @@
 package com.mreturn.zhihudaily.api;
 
-import com.mreturn.zhihudaily.app.BaseApplication;
+import com.mreturn.zhihudaily.app.ZhiHuApplication;
 import com.mreturn.zhihudaily.app.Constant;
 import com.mreturn.zhihudaily.utils.NetUtils;
 
@@ -38,7 +38,7 @@ public class AppClient {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Response response = chain.proceed(chain.request());
-            if (NetUtils.isNetAvailable(BaseApplication.getAppContext())){
+            if (NetUtils.isNetAvailable(ZhiHuApplication.appContext)){
                 int maxAge = 60; //在线缓存可读取时间（s）
                 return response.newBuilder()
                         .removeHeader("Pragma")
@@ -66,14 +66,14 @@ public class AppClient {
                 builder.readTimeout(DEFAULT_TIMEOUT,TimeUnit.SECONDS);
                 builder.writeTimeout(DEFAULT_TIMEOUT,TimeUnit.SECONDS);
                 //添加缓存
-                File cacheFile = new File(BaseApplication.getAppContext().getCacheDir(),"okHttpCache");
+                File cacheFile = new File(ZhiHuApplication.appContext.getCacheDir(),"okHttpCache");
                 builder.cache(new Cache(cacheFile,DEFAULT_CACHE_SIZE));
                 //添加拦截器
                 builder.addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
                         Request request = chain.request();
-                        if (!NetUtils.isNetAvailable(BaseApplication.getAppContext())){
+                        if (!NetUtils.isNetAvailable(ZhiHuApplication.appContext)){
                             request = request.newBuilder().cacheControl(CacheControl.FORCE_CACHE).build();
                         }
                         return chain.proceed(request);

@@ -11,11 +11,10 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.mreturn.zhihudaily.MainActivity;
+import com.mreturn.zhihudaily.ui.main.MainActivity;
 import com.mreturn.zhihudaily.Presenter.SplashPresenter;
 import com.mreturn.zhihudaily.R;
 import com.mreturn.zhihudaily.model.SplashData;
-import com.mreturn.zhihudaily.ui.view.SplashView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

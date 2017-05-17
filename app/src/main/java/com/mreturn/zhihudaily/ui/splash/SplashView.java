@@ -1,4 +1,4 @@
-package com.mreturn.zhihudaily.ui.view;
+package com.mreturn.zhihudaily.ui.splash;
 
 import com.mreturn.zhihudaily.model.SplashData;
 

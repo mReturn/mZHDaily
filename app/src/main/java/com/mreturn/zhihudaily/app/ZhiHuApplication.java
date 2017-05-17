@@ -10,8 +10,8 @@ import com.squareup.leakcanary.LeakCanary;
  * on 2017/5/16.
  */
 
-public class BaseApplication extends Application {
-    private static Context appContext;
+public class ZhiHuApplication extends Application {
+    public static Context appContext;
 
     @Override
     public void onCreate() {
