@@ -65,7 +65,6 @@ public abstract class BaseToolBarAtivity extends AppCompatActivity {
     protected void initToolbar(){
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null){
-            ToastShow.show("not null");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
         }
@@ -89,7 +88,6 @@ public abstract class BaseToolBarAtivity extends AppCompatActivity {
 
     public void setToolBarTitle(int resId){
         if (getSupportActionBar() != null){
-            ToastShow.show("set title");
             getSupportActionBar().setTitle(resId);
         }
     }

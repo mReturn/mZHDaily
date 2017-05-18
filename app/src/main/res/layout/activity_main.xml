@@ -6,7 +6,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mreturn.zhihudaily.ui.main.MainActivity"
+    tools:context=".ui.main.MainActivity"
     tools:openDrawer="start"
     >
     <LinearLayout
@@ -45,7 +45,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_content"
+        app:menu="@menu/drawer_actions"
         />
 
 </android.support.v4.widget.DrawerLayout>

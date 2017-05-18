@@ -52,7 +52,7 @@ public class SplashPresenter extends BasePresenter {
     }
 
     public void showImg(Context context) {
-        if (NetUtils.isNetAvailable(context)) {
+//        if (NetUtils.isNetAvailable(context)) {
             boolean isAppOpened = (boolean) SpUtils.get(context, Constant.IS_APP_OPENED, false);
             if (!isAppOpened) {
                 //第一次打开
@@ -69,9 +69,9 @@ public class SplashPresenter extends BasePresenter {
                     loadImg();
                 }
             }
-        } else {
-            splashView.showImg(R.drawable.splash);
-        }
+//        } else {
+//            splashView.showImg(R.drawable.splash);
+//        }
     }
 
 }

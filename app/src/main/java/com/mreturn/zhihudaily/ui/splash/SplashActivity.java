@@ -44,7 +44,7 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
 
@@ -78,7 +78,6 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
     @Override
     public void getSplashDatasuccess(final SplashData splashData) {
         if (splashData != null && splashData.getCreatives().size()>0){
-            ToastShow.show("splash data");
             final SplashData.CreativesBean creativesBean = splashData.getCreatives().get(0);
             Glide.with(this)
                     .load(creativesBean.getUrl())

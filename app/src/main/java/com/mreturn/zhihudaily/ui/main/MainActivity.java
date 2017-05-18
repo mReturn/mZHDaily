@@ -7,7 +7,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,25 +32,17 @@ public class MainActivity extends BaseToolBarAtivity {
     NavigationView navView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
 
     TextView tvCollect;
     TextView tvDownload;
     LinearLayout llUser;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-    }
 
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
     }
+
 
     @Override
     protected BasePresenter createPresenter() {
@@ -60,13 +51,15 @@ public class MainActivity extends BaseToolBarAtivity {
 
     @Override
     protected void initView() {
+        initToolbar(R.string.index);
         initDrawerLayout();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        initToolbar(R.string.index);
+//        initToolbar(R.string.index);
+//        setListener();
     }
 
     @Override
@@ -76,7 +69,7 @@ public class MainActivity extends BaseToolBarAtivity {
     }
 
     private void initDrawerLayout() {
-//        mDrawerLayout.setStatusBarBackground(R.color.colorPrimaryDark);
+        mDrawerLayout.setStatusBarBackground(R.color.colorPrimaryDark);
         View headView = navView.getHeaderView(0);
         tvCollect = (TextView) headView.findViewById(R.id.tv_collect);
         tvDownload = (TextView) headView.findViewById(R.id.tv_download);
@@ -86,6 +79,26 @@ public class MainActivity extends BaseToolBarAtivity {
 
     @Override
     protected void setListener() {
+        ToastShow.show("set listener");
+        llUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ToastShow.show("user");
+            }
+        });
+
+        tvCollect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ToastShow.show("collect");
+            }
+        });
+        tvDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ToastShow.show("download");
+            }
+        });
 
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -116,7 +129,6 @@ public class MainActivity extends BaseToolBarAtivity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main,menu);
@@ -129,6 +141,9 @@ public class MainActivity extends BaseToolBarAtivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                break;
             case R.id.action_notification:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 break;
