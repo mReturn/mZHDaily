@@ -13,13 +13,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.mreturn.zhihudaily.app.Constant;
-import com.mreturn.zhihudaily.ui.main.MainActivity;
 import com.mreturn.zhihudaily.Presenter.SplashPresenter;
 import com.mreturn.zhihudaily.R;
+import com.mreturn.zhihudaily.app.Constant;
 import com.mreturn.zhihudaily.model.SplashData;
+import com.mreturn.zhihudaily.ui.main.MainActivity;
 import com.mreturn.zhihudaily.utils.CommonUtils;
 import com.mreturn.zhihudaily.utils.SpUtils;
+import com.mreturn.zhihudaily.utils.ToastShow;
 
 import java.io.File;
 
@@ -77,6 +78,7 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
     @Override
     public void getSplashDatasuccess(final SplashData splashData) {
         if (splashData != null && splashData.getCreatives().size()>0){
+            ToastShow.show("splash data");
             final SplashData.CreativesBean creativesBean = splashData.getCreatives().get(0);
             Glide.with(this)
                     .load(creativesBean.getUrl())
