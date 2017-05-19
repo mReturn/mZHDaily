@@ -6,10 +6,10 @@ package com.mreturn.zhihudaily.app;
  */
 
 public class Constant {
-//    public static final String BASE_URL = "http://news-at.zhihu.com/api/4/";
-    public static final String BASE_URL = "http://news-at.zhihu.com/api/7/";
+    public static final String BASE_URL = "http://news-at.zhihu.com/api/4/";
+    public static final String BASE_SPLASH_URL = "http://news-at.zhihu.com/api/7/";
 
-    //sp
+    //sharedpreference
     public static final String IS_APP_OPENED = "is_app_opened";
     public static final String SPLASH_IMG_PATH = "splash_img_path";
     public static final String KEY_START_IMG_TEXT = "key_start_img_text";
@@ -18,4 +18,6 @@ public class Constant {
 
     //fragment
     public static final String KEY_TITLE = "title";
+    public static final String KEY_TAG = "tag";
+    public static final String TAG_MAIN = "main";
 }

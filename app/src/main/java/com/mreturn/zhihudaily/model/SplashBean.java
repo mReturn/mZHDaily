@@ -7,7 +7,7 @@ import java.util.List;
  * on 2017/5/16.
  */
 
-public class SplashData {
+public class SplashBean {
 
 
     private List<CreativesBean> creatives;

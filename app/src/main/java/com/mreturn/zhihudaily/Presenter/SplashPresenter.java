@@ -4,11 +4,10 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.mreturn.zhihudaily.R;
-import com.mreturn.zhihudaily.api.AppClient;
+import com.mreturn.zhihudaily.api.ZhihuClient;
 import com.mreturn.zhihudaily.app.Constant;
-import com.mreturn.zhihudaily.model.SplashData;
+import com.mreturn.zhihudaily.model.SplashBean;
 import com.mreturn.zhihudaily.ui.splash.SplashView;
-import com.mreturn.zhihudaily.utils.NetUtils;
 import com.mreturn.zhihudaily.utils.SpUtils;
 import com.mreturn.zhihudaily.utils.TransformUtils;
 
@@ -28,15 +27,15 @@ public class SplashPresenter extends BasePresenter {
     }
 
     private void loadImg() {
-        AppClient.getZhihuApi().getSplashData().compose(
-                TransformUtils.<SplashData>defaultSchedulers()).subscribe(new Observer<SplashData>() {
+        ZhihuClient.getZhihuApi(Constant.BASE_SPLASH_URL).getSplashData().compose(
+                TransformUtils.<SplashBean>defaultSchedulers()).subscribe(new Observer<SplashBean>() {
             @Override
             public void onSubscribe(Disposable d) {
                 addDisposable(d);
             }
 
             @Override
-            public void onNext(SplashData value) {
+            public void onNext(SplashBean value) {
                 splashView.getSplashDatasuccess(value);
             }
 

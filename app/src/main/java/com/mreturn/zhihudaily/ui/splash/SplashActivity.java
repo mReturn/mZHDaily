@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
@@ -16,11 +15,10 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.mreturn.zhihudaily.Presenter.SplashPresenter;
 import com.mreturn.zhihudaily.R;
 import com.mreturn.zhihudaily.app.Constant;
-import com.mreturn.zhihudaily.model.SplashData;
+import com.mreturn.zhihudaily.model.SplashBean;
 import com.mreturn.zhihudaily.ui.main.MainActivity;
 import com.mreturn.zhihudaily.utils.CommonUtils;
 import com.mreturn.zhihudaily.utils.SpUtils;
-import com.mreturn.zhihudaily.utils.ToastShow;
 
 import java.io.File;
 
@@ -76,9 +74,9 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
     }
 
     @Override
-    public void getSplashDatasuccess(final SplashData splashData) {
+    public void getSplashDatasuccess(final SplashBean splashData) {
         if (splashData != null && splashData.getCreatives().size()>0){
-            final SplashData.CreativesBean creativesBean = splashData.getCreatives().get(0);
+            final SplashBean.CreativesBean creativesBean = splashData.getCreatives().get(0);
             Glide.with(this)
                     .load(creativesBean.getUrl())
                     .downloadOnly(new SimpleTarget<File>() {

@@ -1,6 +1,6 @@
 package com.mreturn.zhihudaily.ui.splash;
 
-import com.mreturn.zhihudaily.model.SplashData;
+import com.mreturn.zhihudaily.model.SplashBean;
 
 /**
  * Created by mReturn
@@ -13,5 +13,5 @@ public interface SplashView {
 
     void showImg(String imgUrl);
 
-    void getSplashDatasuccess(SplashData splashData);
+    void getSplashDatasuccess(SplashBean splashData);
 }

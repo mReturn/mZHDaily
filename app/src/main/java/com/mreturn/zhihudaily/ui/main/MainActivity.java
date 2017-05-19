@@ -22,9 +22,8 @@ import com.mreturn.zhihudaily.utils.SpUtils;
 import com.mreturn.zhihudaily.utils.ToastShow;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class MainActivity extends BaseToolBarAtivity {
+public class MainActivity extends BaseToolBarAtivity implements View.OnClickListener {
 
     @BindView(R.id.fl_main)
     FrameLayout flMain;
@@ -36,6 +35,9 @@ public class MainActivity extends BaseToolBarAtivity {
     TextView tvCollect;
     TextView tvDownload;
     LinearLayout llUser;
+
+    String currentTag;
+    private long exitTime = 0;
 
 
     @Override
@@ -55,18 +57,6 @@ public class MainActivity extends BaseToolBarAtivity {
         initDrawerLayout();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        initToolbar(R.string.index);
-//        setListener();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(Constant.KEY_TITLE,getSupportActionBar().getTitle().toString());
-    }
 
     private void initDrawerLayout() {
         mDrawerLayout.setStatusBarBackground(R.color.colorPrimaryDark);
@@ -76,29 +66,11 @@ public class MainActivity extends BaseToolBarAtivity {
         llUser = (LinearLayout) headView.findViewById(R.id.ll_user);
     }
 
-
     @Override
     protected void setListener() {
-        ToastShow.show("set listener");
-        llUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ToastShow.show("user");
-            }
-        });
-
-        tvCollect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ToastShow.show("collect");
-            }
-        });
-        tvDownload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ToastShow.show("download");
-            }
-        });
+        llUser.setOnClickListener(this);
+        tvCollect.setOnClickListener(this);
+        tvDownload.setOnClickListener(this);
 
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -124,15 +96,34 @@ public class MainActivity extends BaseToolBarAtivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        if (savedInstanceState != null){
-            String title = savedInstanceState.getString(Constant.KEY_TITLE,"首页");
+        if (savedInstanceState != null) {
+            String title = savedInstanceState.getString(Constant.KEY_TITLE, "首页");
+            setToolBarTitle(title);
+            currentTag = savedInstanceState.getString(Constant.KEY_TAG,Constant.TAG_MAIN);
+            intFragment(currentTag,title);
+        }
+    }
+
+    private void intFragment(String tag, String title) {
+        currentTag = tag;
+        if (tag.equals(Constant.TAG_MAIN)){
+
+        }else{
+
         }
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(Constant.KEY_TAG,currentTag);
+        outState.putString(Constant.KEY_TITLE, getSupportActionBar().getTitle().toString());
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main,menu);
-        if ((Boolean) SpUtils.get(this,Constant.KEY_NIGHT,false)){
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        if ((Boolean) SpUtils.get(this, Constant.KEY_NIGHT, false)) {
             menu.getItem(1).setTitle(R.string.action_day_mode);
         }
         return true;
@@ -140,7 +131,7 @@ public class MainActivity extends BaseToolBarAtivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 break;
@@ -149,13 +140,13 @@ public class MainActivity extends BaseToolBarAtivity {
                 break;
             case R.id.action_night:
                 int uiMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-                switch (uiMode){
+                switch (uiMode) {
                     case Configuration.UI_MODE_NIGHT_NO: //当前日间
-                        SpUtils.put(this,Constant.KEY_NIGHT,true);
+                        SpUtils.put(this, Constant.KEY_NIGHT, true);
                         getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                         break;
                     case Configuration.UI_MODE_NIGHT_YES: //当前夜间
-                        SpUtils.put(this,Constant.KEY_NIGHT,false);
+                        SpUtils.put(this, Constant.KEY_NIGHT, false);
                         getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                         break;
                     default:
@@ -164,7 +155,7 @@ public class MainActivity extends BaseToolBarAtivity {
                 break;
             case R.id.action_setting:
                 ToastShow.show("setting");
-            break;
+                break;
             default:
                 break;
         }
@@ -176,7 +167,17 @@ public class MainActivity extends BaseToolBarAtivity {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            finish();
+            if ((System.currentTimeMillis() - exitTime) > 2000){
+                ToastShow.show("再次点击退出");
+                exitTime = System.currentTimeMillis();
+            }else{
+                finish();
+            }
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+        ToastShow.show("click");
     }
 }

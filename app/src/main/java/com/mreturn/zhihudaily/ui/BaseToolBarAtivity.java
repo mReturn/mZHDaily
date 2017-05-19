@@ -80,9 +80,9 @@ public abstract class BaseToolBarAtivity extends AppCompatActivity {
         setToolBarTitle(redId);
     }
 
-    public void setToolBarTitle(String txt){
+    public void setToolBarTitle(String title){
         if (getSupportActionBar() != null)
-            getSupportActionBar().setTitle(txt);
+            getSupportActionBar().setTitle(title);
 
     }
 

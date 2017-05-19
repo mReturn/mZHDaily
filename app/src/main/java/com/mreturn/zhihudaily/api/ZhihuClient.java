@@ -1,5 +1,7 @@
 package com.mreturn.zhihudaily.api;
 
+import android.text.TextUtils;
+
 import com.mreturn.zhihudaily.app.ZhiHuApplication;
 import com.mreturn.zhihudaily.app.Constant;
 import com.mreturn.zhihudaily.utils.NetUtils;
@@ -25,7 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * on 2017/5/16.
  */
 
-public class AppClient {
+public class ZhihuClient {
     private static ZhihuApi mZhihuApi;
     private static OkHttpClient mhttpClient;
     private static Converter.Factory mConverterFactory = GsonConverterFactory.create();
@@ -58,6 +60,10 @@ public class AppClient {
     };
 
     public static ZhihuApi getZhihuApi(){
+        return getZhihuApi("");
+    }
+    public static ZhihuApi getZhihuApi(String basUrl){
+        String mBaseUrl = TextUtils.isEmpty(basUrl)? Constant.BASE_URL:basUrl;
         if (mZhihuApi == null){
             if (mhttpClient == null){
                 OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -85,7 +91,7 @@ public class AppClient {
             }
             Retrofit retrofit = new Retrofit.Builder()
                     .client(mhttpClient)
-                    .baseUrl(Constant.BASE_URL)
+                    .baseUrl(mBaseUrl)
                     .addConverterFactory(mConverterFactory)
                     .addCallAdapterFactory(mCallAdapterFactory)
                     .build();
