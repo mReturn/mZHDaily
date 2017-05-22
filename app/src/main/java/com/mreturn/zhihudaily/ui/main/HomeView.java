@@ -22,7 +22,9 @@ public interface HomeView {
 
     void showLoadMoreError();
 
-    void showLoadMoreView(boolean show);
+    void setLoadMoreViewShow(boolean show);
+
+    void showNoMoreData();
 
 
 }

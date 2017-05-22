@@ -268,7 +268,7 @@ public class RollViewPager extends ViewPager {
             if (isShowResImage) {
                 ivTop.setImageResource(resImageIds[position]);
             } else {
-                ImageLoader.display(context,topStories.get(position).getImage(),ivTop);
+                ImageLoader.display(context,ivTop,topStories.get(position).getImage());
             }
             container.addView(view);
             return view;

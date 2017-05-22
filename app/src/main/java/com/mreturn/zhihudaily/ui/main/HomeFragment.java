@@ -18,7 +18,6 @@ import com.mreturn.zhihudaily.listener.LoadMoreScrollListener;
 import com.mreturn.zhihudaily.model.StoryListBean;
 import com.mreturn.zhihudaily.ui.BaseFragment;
 import com.mreturn.zhihudaily.utils.CommonUtils;
-import com.mreturn.zhihudaily.utils.NetUtils;
 import com.mreturn.zhihudaily.utils.ToastShow;
 import com.mreturn.zhihudaily.widget.RollViewPager;
 
@@ -59,7 +58,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
         rvHome.setLayoutManager(new LinearLayoutManager(getContext()));
         rvHome.setItemAnimator(new DefaultItemAnimator());
         rvHome.setHasFixedSize(true); //确保item宽高 不需再额外计算每个item大小
-        mAdapter = new StoriesAdapter(new ArrayList<StoryListBean.StoriesBean>(0), this);
+        mAdapter = new StoriesAdapter(new ArrayList<StoryListBean.StoriesBean>(0), getContext());
         rvHome.setAdapter(mAdapter);
         srlHome.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorPrimary));
 
@@ -85,11 +84,11 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @Override
     protected void getData() {
-        if (NetUtils.isNetAvailable(getContext())) {
+//        if (NetUtils.isNetAvailable(getContext())) {
             homePresenter.loadLatest(getContext());
-        } else {
-            homePresenter.getCache(getContext());
-        }
+//        } else {
+//            homePresenter.getCache(getContext());
+//        }
     }
 
     @Override
@@ -185,12 +184,17 @@ public class HomeFragment extends BaseFragment implements HomeView {
     }
 
     @Override
-    public void showLoadMoreView(boolean show) {
+    public void setLoadMoreViewShow(boolean show) {
         if (show){
             mAdapter.addFooter();
             rvHome.smoothScrollToPosition(mAdapter.getItemCount());
         }else{
             mAdapter.removeFooter();
         }
+    }
+
+    @Override
+    public void showNoMoreData() {
+        ToastShow.show("已加载完毕");
     }
 }

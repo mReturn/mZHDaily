@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatDelegate;
@@ -38,6 +39,8 @@ public class MainActivity extends BaseToolBarAtivity implements View.OnClickList
 
     String currentTag;
     private long exitTime = 0;
+    private HomeFragment mHomeFragment;
+    private Fragment currentFragment;
 
 
     @Override
@@ -99,16 +102,28 @@ public class MainActivity extends BaseToolBarAtivity implements View.OnClickList
         if (savedInstanceState != null) {
             String title = savedInstanceState.getString(Constant.KEY_TITLE, "首页");
             setToolBarTitle(title);
-            currentTag = savedInstanceState.getString(Constant.KEY_TAG,Constant.TAG_MAIN);
-            intFragment(currentTag,title);
+            currentTag = savedInstanceState.getString(Constant.KEY_TAG, Constant.TAG_MAIN);
+            initFragment(currentTag, title);
+        }else{
+            initFragment(Constant.TAG_MAIN,getResources().getString(R.string.index));
         }
     }
 
-    private void intFragment(String tag, String title) {
+    private void initFragment(String tag, String title) {
         currentTag = tag;
-        if (tag.equals(Constant.TAG_MAIN)){
-
-        }else{
+        if (tag.equals(Constant.TAG_MAIN)) {
+            mHomeFragment = (HomeFragment) getSupportFragmentManager()
+                    .findFragmentByTag(Constant.TAG_MAIN);
+            if (mHomeFragment == null) {
+                mHomeFragment = new HomeFragment();
+                currentFragment = mHomeFragment;
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.fl_main, currentFragment, Constant.TAG_MAIN)
+                        .show(currentFragment)
+                        .commit();
+            }
+        } else {
 
         }
     }
@@ -116,7 +131,7 @@ public class MainActivity extends BaseToolBarAtivity implements View.OnClickList
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(Constant.KEY_TAG,currentTag);
+        outState.putString(Constant.KEY_TAG, currentTag);
         outState.putString(Constant.KEY_TITLE, getSupportActionBar().getTitle().toString());
     }
 
@@ -167,10 +182,10 @@ public class MainActivity extends BaseToolBarAtivity implements View.OnClickList
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            if ((System.currentTimeMillis() - exitTime) > 2000){
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
                 ToastShow.show("再次点击退出");
                 exitTime = System.currentTimeMillis();
-            }else{
+            } else {
                 finish();
             }
         }

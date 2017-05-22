@@ -82,7 +82,7 @@ public abstract class BaseRecycleViewAdapter<T extends BaseAdapterBean> extends 
 
     @Override
     public int getItemViewType(int position) {
-        return getItemType();
+        return getItemType(position);
     }
 
     public T getItem(int pos) {
@@ -141,7 +141,7 @@ public abstract class BaseRecycleViewAdapter<T extends BaseAdapterBean> extends 
     }
 
 
-    protected abstract int getItemType();
+    protected abstract int getItemType(int pos);
 
     protected abstract int getItemLayout();
 

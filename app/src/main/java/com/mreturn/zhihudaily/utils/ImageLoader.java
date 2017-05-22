@@ -13,7 +13,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 public class ImageLoader {
 
-    public static void display(Context context, String url, ImageView iv){
+    public static void display(Context context, ImageView iv, String url){
         Glide.with(context)
                 .load(url)
                 .centerCrop()

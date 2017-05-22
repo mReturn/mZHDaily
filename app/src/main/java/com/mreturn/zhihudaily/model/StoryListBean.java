@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.mreturn.zhihudaily.adapter.BaseAdapterBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,11 +98,36 @@ public class StoryListBean implements Parcelable{
         private List<String> images;
 
         private String date;
-        private String isRead;
+        private boolean isRead;
+        private boolean haveImg;
+
+        public static final int TYPE_STORY = 0;
+        public static final int TYPE_NO_IMG_STORY = 4;
+
 
         public StoriesBean(String date, int showType) {
             this.date = date;
             this.showType = showType;
+        }
+
+        public StoriesBean(int id, String title, String image, String date) {
+            this.id = id;
+            this.title = title;
+            if (image == null || image.length() == 0 || image.equals("")) {
+                setShowType(StoriesBean.TYPE_NO_IMG_STORY);
+                this.haveImg = false;
+            } else {
+                this.haveImg = true;
+                images = new ArrayList<>();
+                images.add(image);
+            }
+            this.date = date;
+        }
+
+        public StoriesBean(int id, String title, String image, String date, boolean multipic, boolean isRead) {
+            this(id, title, image, date);
+            this.multipic = multipic;
+            this.isRead = isRead;
         }
 
         protected StoriesBean(Parcel in) {
@@ -112,8 +138,10 @@ public class StoryListBean implements Parcelable{
             id = in.readInt();
             images = in.createStringArrayList();
             date = in.readString();
-            isRead = in.readString();
+            isRead = in.readByte() != 0;
+            haveImg = in.readByte() != 0;
         }
+
 
         public static final Creator<StoriesBean> CREATOR = new Creator<StoriesBean>() {
             @Override
@@ -127,21 +155,20 @@ public class StoryListBean implements Parcelable{
             }
         };
 
-        @Override
-        public int describeContents() {
-            return 0;
+        public boolean isRead() {
+            return isRead;
         }
 
-        @Override
-        public void writeToParcel(Parcel parcel, int i) {
-            parcel.writeString(title);
-            parcel.writeString(ga_prefix);
-            parcel.writeByte((byte) (multipic ? 1 : 0));
-            parcel.writeInt(type);
-            parcel.writeInt(id);
-            parcel.writeStringList(images);
-            parcel.writeString(date);
-            parcel.writeString(isRead);
+        public void setRead(boolean read) {
+            isRead = read;
+        }
+
+        public boolean isHaveImg() {
+            return haveImg;
+        }
+
+        public void setHaveImg(boolean haveImg) {
+            this.haveImg = haveImg;
         }
 
         public String getDate() {
@@ -152,13 +179,6 @@ public class StoryListBean implements Parcelable{
             this.date = date;
         }
 
-        public String getIsRead() {
-            return isRead;
-        }
-
-        public void setIsRead(String isRead) {
-            this.isRead = isRead;
-        }
 
         public String getTitle() {
             return title;
@@ -208,6 +228,23 @@ public class StoryListBean implements Parcelable{
             this.images = images;
         }
 
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeString(title);
+            parcel.writeString(ga_prefix);
+            parcel.writeByte((byte) (multipic ? 1 : 0));
+            parcel.writeInt(type);
+            parcel.writeInt(id);
+            parcel.writeStringList(images);
+            parcel.writeString(date);
+            parcel.writeByte((byte) (isRead ? 1 : 0));
+            parcel.writeByte((byte) (haveImg ? 1 : 0));
+        }
     }
 
     public static class TopStoriesBean implements Parcelable{
@@ -224,6 +261,12 @@ public class StoryListBean implements Parcelable{
         private int id;
         private String ga_prefix;
         private String title;
+
+        public TopStoriesBean(int id, String title, String image) {
+            this.id = id;
+            this.title = title;
+            this.image = image;
+        }
 
         protected TopStoriesBean(Parcel in) {
             image = in.readString();
