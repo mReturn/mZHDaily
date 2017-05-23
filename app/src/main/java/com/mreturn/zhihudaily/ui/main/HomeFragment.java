@@ -13,8 +13,10 @@ import android.widget.LinearLayout;
 import com.mreturn.zhihudaily.Presenter.BasePresenter;
 import com.mreturn.zhihudaily.Presenter.HomePresenter;
 import com.mreturn.zhihudaily.R;
-import com.mreturn.zhihudaily.adapter.StoriesAdapter;
+import com.mreturn.zhihudaily.adapter.BaseStoryRecycleAdapter;
+import com.mreturn.zhihudaily.adapter.HomeStoriesAdapter;
 import com.mreturn.zhihudaily.listener.LoadMoreScrollListener;
+import com.mreturn.zhihudaily.model.StoriesBean;
 import com.mreturn.zhihudaily.model.StoryListBean;
 import com.mreturn.zhihudaily.ui.BaseFragment;
 import com.mreturn.zhihudaily.utils.CommonUtils;
@@ -40,7 +42,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     private HomePresenter homePresenter = new HomePresenter(this);
     private String currentData;
-    private StoriesAdapter mAdapter;
+    private HomeStoriesAdapter mAdapter;
     private List<Integer> readedList;
 
     @Override
@@ -58,7 +60,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
         rvHome.setLayoutManager(new LinearLayoutManager(getContext()));
         rvHome.setItemAnimator(new DefaultItemAnimator());
         rvHome.setHasFixedSize(true); //确保item宽高 不需再额外计算每个item大小
-        mAdapter = new StoriesAdapter(new ArrayList<StoryListBean.StoriesBean>(0), getContext());
+        mAdapter = new HomeStoriesAdapter(new ArrayList<StoriesBean>(), getContext());
         rvHome.setAdapter(mAdapter);
         srlHome.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorPrimary));
 
@@ -69,6 +71,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
         rvHome.addOnScrollListener(new LoadMoreScrollListener() {
             @Override
             protected void onLoadMore() {
+                if (mAdapter.getFooterState() == BaseStoryRecycleAdapter.STATE_LOADING)
+                    return;
                 homePresenter.loadMore(currentData);
             }
         });
@@ -85,7 +89,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     @Override
     protected void getData() {
 //        if (NetUtils.isNetAvailable(getContext())) {
-            homePresenter.loadLatest(getContext());
+        homePresenter.loadLatest(getContext());
 //        } else {
 //            homePresenter.getCache(getContext());
 //        }
@@ -140,7 +144,6 @@ public class HomeFragment extends BaseFragment implements HomeView {
         //添加到view
         flTop.removeAllViews();
         flTop.addView(rollViewPager);
-
         return topView;
     }
 
@@ -168,7 +171,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
 
     @Override
-    public void showMoreStory(List<StoryListBean.StoriesBean> stories) {
+    public void showMoreStory(List<StoriesBean> stories) {
         mAdapter.addTitle(CommonUtils.getCnDate(currentData));
         mAdapter.addDatas(stories);
     }
@@ -185,10 +188,11 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @Override
     public void setLoadMoreViewShow(boolean show) {
-        if (show){
+        // footer view
+        if (show) {
             mAdapter.addFooter();
             rvHome.smoothScrollToPosition(mAdapter.getItemCount());
-        }else{
+        } else {
             mAdapter.removeFooter();
         }
     }

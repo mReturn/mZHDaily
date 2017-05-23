@@ -1,4 +1,4 @@
-package com.mreturn.zhihudaily.db;
+package com.mreturn.zhihudaily.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.mreturn.zhihudaily.app.Constant;
+import com.mreturn.zhihudaily.model.StoriesBean;
 import com.mreturn.zhihudaily.model.StoryListBean;
 
 import java.util.ArrayList;
@@ -50,8 +51,8 @@ public class StoryDao {
         return Collections.emptyList();
     }
 
-    public List<StoryListBean.StoriesBean> getStoryList() {
-        List<StoryListBean.StoriesBean> stories = new ArrayList<>();
+    public List<StoriesBean> getStoryList() {
+        List<StoriesBean> stories = new ArrayList<>();
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         Cursor cursor = null;
         try {
@@ -66,7 +67,7 @@ public class StoryDao {
                 String date = cursor.getString(cursor.getColumnIndex(Constant.DATE));
                 int multipic = cursor.getInt(cursor.getColumnIndex(Constant.MULTI_PIC));
                 int read = cursor.getInt(cursor.getColumnIndex(Constant.READ));
-                stories.add(new StoryListBean.StoriesBean(id, title, image, date, multipic == 1, read == 1));
+                stories.add(new StoriesBean(id, title, image, date, multipic == 1, read == 1));
             }
             return stories;
         } catch (Exception e) {
@@ -80,7 +81,7 @@ public class StoryDao {
         return Collections.emptyList();
     }
 
-    public void saveStoryList(List<StoryListBean.StoriesBean> stories, List<StoryListBean.TopStoriesBean> topStories){
+    public void saveStoryList(List<StoriesBean> stories, List<StoryListBean.TopStoriesBean> topStories){
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         try {
             database.beginTransaction();
@@ -96,7 +97,7 @@ public class StoryDao {
                     database.endTransaction();
                 }
             }
-            for (StoryListBean.StoriesBean story:stories){
+            for (StoriesBean story:stories){
                 ContentValues cv = new ContentValues();
                 cv.put(Constant.ID,story.getId());
                 cv.put(Constant.TITLE,story.getTitle());

@@ -1,4 +1,4 @@
-package com.mreturn.zhihudaily.db;
+package com.mreturn.zhihudaily.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,38 +19,38 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String createStoryTable = "CREATE TABLE"
+        String createStoryTable = "CREATE TABLE "
                 + Constant.TABLE_STORY
                 + "("
-                + Constant.UID + "integer primary key autoincrement,"
-                + Constant.ID + "int,"
-                + Constant.TITLE + "text，"
-                + Constant.IMAGE + "text,"
-                + Constant.DATE + "text,"
-                + Constant.MULTI_PIC + "int,"
-                + Constant.TOP + "int,"
-                + Constant.READ + "int"
+                + Constant.UID + " integer primary key autoincrement,"
+                + Constant.ID + " int,"
+                + Constant.TITLE + " text，"
+                + Constant.IMAGE + " text,"
+                + Constant.DATE + " text,"
+                + Constant.MULTI_PIC + " int,"
+                + Constant.TOP + " int,"
+                + Constant.READ + " int"
                 + ")";
-        String createReadTAble = "CREATE TABLE"
+        String createReadTAble = "CREATE TABLE "
                 + Constant.TABLE_READ
                 + "("
-                + Constant.UID + "integer primary key autoincrement,"
-                + Constant.ID + "int"
+                + Constant.UID + " integer primary key autoincrement,"
+                + Constant.ID + " int"
                 + ")";
-        String createLikeTable = "CREATE TABLE"
+        String createLikeTable = "CREATE TABLE "
                 + Constant.TABLE_LIKE
                 + "("
-                + Constant.UID + "integer primary key autoincrement,"
-                + Constant.ID + "int"
+                + Constant.UID + " integer primary key autoincrement,"
+                + Constant.ID + " int"
                 + ")";
-        String createStarTable = "CREATE TABLE"
+        String createStarTable = "CREATE TABLE "
                 + Constant.TABLE_STAR
                 + "("
-                + Constant.UID + "integer primary key autoincrement,"
-                + Constant.ID + "int,"
-                + Constant.TITLE + "text,"
-                + Constant.IMAGE + "text,"
-                + Constant.MULTI_PIC + "int"
+                + Constant.UID + " integer primary key autoincrement,"
+                + Constant.ID + " int,"
+                + Constant.TITLE + " text,"
+                + Constant.IMAGE + " text,"
+                + Constant.MULTI_PIC + " int"
                 + ")";
 
         sqLiteDatabase.execSQL(createStoryTable);

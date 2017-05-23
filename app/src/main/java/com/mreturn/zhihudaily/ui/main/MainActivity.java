@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatDelegate;
@@ -19,6 +20,7 @@ import com.mreturn.zhihudaily.Presenter.BasePresenter;
 import com.mreturn.zhihudaily.R;
 import com.mreturn.zhihudaily.app.Constant;
 import com.mreturn.zhihudaily.ui.BaseToolBarAtivity;
+import com.mreturn.zhihudaily.ui.theme.ThemesFragment;
 import com.mreturn.zhihudaily.utils.SpUtils;
 import com.mreturn.zhihudaily.utils.ToastShow;
 
@@ -78,20 +80,27 @@ public class MainActivity extends BaseToolBarAtivity implements View.OnClickList
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getOrder();
-                ToastShow.show("click");
+                int themeId = item.getOrder();
                 switch (item.getItemId()) {
                     case R.id.menu_main_page:
-                        ToastShow.show("main");
+                        mHomeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(Constant.TAG_MAIN);
+                        if (mHomeFragment == null) {
+                            mHomeFragment = new HomeFragment();
+                        }
+                        switchFragment(mHomeFragment, Constant.TAG_MAIN, getResources().getString(R.string.index));
                         break;
                     default:
-                        ToastShow.show("other");
+                        ThemesFragment fragment = (ThemesFragment) getSupportFragmentManager().findFragmentByTag(themeId + "");
+                        if (fragment == null) {
+                            fragment = ThemesFragment.newInstance(themeId);
+                        }
+                        switchFragment(fragment, themeId + "", item.getTitle().toString());
                         break;
                 }
                 //关闭菜单
                 item.setChecked(true);
                 mDrawerLayout.closeDrawers();
-                return false;
+                return true;
             }
         });
 
@@ -104,8 +113,8 @@ public class MainActivity extends BaseToolBarAtivity implements View.OnClickList
             setToolBarTitle(title);
             currentTag = savedInstanceState.getString(Constant.KEY_TAG, Constant.TAG_MAIN);
             initFragment(currentTag, title);
-        }else{
-            initFragment(Constant.TAG_MAIN,getResources().getString(R.string.index));
+        } else {
+            initFragment(Constant.TAG_MAIN, getResources().getString(R.string.index));
         }
     }
 
@@ -124,8 +133,32 @@ public class MainActivity extends BaseToolBarAtivity implements View.OnClickList
                         .commit();
             }
         } else {
-
+            ThemesFragment themesFragment = ThemesFragment.newInstance(Integer.parseInt(tag));
+            currentFragment = themesFragment;
+            switchFragment(themesFragment, tag, title);
         }
+    }
+
+    private void switchFragment(Fragment fragment, String tag, String title) {
+        currentTag = tag;
+        if (!fragment.isAdded()) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .hide(currentFragment)
+                    .add(R.id.fl_main, fragment, tag)
+                    .show(fragment)
+                    .commit();
+        } else {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .hide(currentFragment)
+                    .show(fragment)
+                    .commit();
+        }
+        currentFragment = fragment;
+        setToolBarTitle(title);
     }
 
     @Override
@@ -167,7 +200,9 @@ public class MainActivity extends BaseToolBarAtivity implements View.OnClickList
                     default:
                         break;
                 }
-                break;
+                getSupportFragmentManager().getFragments().clear();
+                recreate(); //移除重新创建 避免多个同时存在
+                return true;
             case R.id.action_setting:
                 ToastShow.show("setting");
                 break;
@@ -186,7 +221,7 @@ public class MainActivity extends BaseToolBarAtivity implements View.OnClickList
                 ToastShow.show("再次点击退出");
                 exitTime = System.currentTimeMillis();
             } else {
-                finish();
+                System.exit(0);
             }
         }
     }

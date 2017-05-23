@@ -27,7 +27,7 @@ public class SplashPresenter extends BasePresenter {
     }
 
     private void loadImg() {
-        ZhihuClient.getZhihuApi(Constant.BASE_SPLASH_URL).getSplashData().compose(
+        ZhihuClient.getZhihuApiV7().getSplashData().compose(
                 TransformUtils.<SplashBean>defaultSchedulers()).subscribe(new Observer<SplashBean>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -51,7 +51,7 @@ public class SplashPresenter extends BasePresenter {
     }
 
     public void showImg(Context context) {
-//        if (NetUtils.isNetAvailable(context)) {
+//        if (NetUtils.isNetAvailable(mContext)) {
             boolean isAppOpened = (boolean) SpUtils.get(context, Constant.IS_APP_OPENED, false);
             if (!isAppOpened) {
                 //第一次打开

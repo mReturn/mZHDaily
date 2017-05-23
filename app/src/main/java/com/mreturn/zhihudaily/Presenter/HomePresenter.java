@@ -4,7 +4,8 @@ import android.content.Context;
 
 import com.mreturn.zhihudaily.api.ZhihuClient;
 import com.mreturn.zhihudaily.app.ZhiHuApplication;
-import com.mreturn.zhihudaily.db.ReadDao;
+import com.mreturn.zhihudaily.database.ReadDao;
+import com.mreturn.zhihudaily.model.StoriesBean;
 import com.mreturn.zhihudaily.model.StoryListBean;
 import com.mreturn.zhihudaily.ui.main.HomeView;
 import com.mreturn.zhihudaily.utils.MyLog;
@@ -21,7 +22,7 @@ import io.reactivex.functions.Consumer;
  * on 2017/5/19.
  */
 
-public class HomePresenter extends BasePresenter {
+public class HomePresenter extends BaseStoryPresenter {
     HomeView homeView;
 
     public HomePresenter(HomeView homeView) {
@@ -31,6 +32,7 @@ public class HomePresenter extends BasePresenter {
 
     @SuppressWarnings("unchecked")
     public void loadLatest(final Context context) {
+        homeView.setRefreshing(true);
         ZhihuClient.getZhihuApi().getLatest()
                 .doOnNext(mConsumer)
                 .compose(TransformUtils.<StoryListBean>defaultSchedulers())
@@ -42,6 +44,7 @@ public class HomePresenter extends BasePresenter {
 
                     @Override
                     public void onNext(StoryListBean storyList) {
+                        homeView.setRefreshing(false);
                         if (storyList != null && storyList.getStories() != null && storyList.getStories().size() > 0) {
                             homeView.showStories(storyList);
                             homeView.setCurrentDate(storyList.getDate());
@@ -66,6 +69,7 @@ public class HomePresenter extends BasePresenter {
 
     @SuppressWarnings("unchecked")
     public void loadMore(String date) {
+        homeView.setLoadMoreViewShow(true);
         ZhihuClient.getZhihuApi().loadMore(date)
                 .doOnNext(mConsumer)
                 .compose(TransformUtils.<StoryListBean>defaultSchedulers())
@@ -77,12 +81,12 @@ public class HomePresenter extends BasePresenter {
 
                     @Override
                     public void onNext(StoryListBean storyList) {
+                        homeView.setLoadMoreViewShow(false);
                         if (storyList != null && storyList.getStories() != null && storyList.getStories().size() > 0) {
                             homeView.setCurrentDate(storyList.getDate());
-                            homeView.setLoadMoreViewShow(false);
                             homeView.showMoreStory(storyList.getStories());
                         }else{
-
+                            homeView.showNoMoreData();
                         }
                     }
 
@@ -99,37 +103,21 @@ public class HomePresenter extends BasePresenter {
                 });
     }
 
-//    public void getCache(Context context) {
-//
-//    }
-
-    Consumer mConsumer = new Consumer<StoryListBean>() {
+    protected Consumer mConsumer = new Consumer<StoryListBean>() {
         @Override
         public void accept(StoryListBean storyListBean) throws Exception {
             //判断是否已读
             ReadDao readDao = new ReadDao(ZhiHuApplication.getAppContext());
             List<Integer> readList = readDao.getReadList();
-            List<StoryListBean.StoriesBean> stories = storyListBean.getStories();
-            for (StoryListBean.StoriesBean story : stories) {
+            List<StoriesBean> stories = storyListBean.getStories();
+            for (StoriesBean story : stories) {
                 story.setRead(readList.contains(story.getId()));
+                //判断是否有图片
                 if (story.getImages() == null || story.getImages().size() == 0) {
                     story.setShowType(story.TYPE_NO_IMG_STORY);
                 }
             }
         }
     };
-
-//    private Observable getLatestObservable(final Context context) {
-//        return ZhihuClient.getZhihuApi().getLatest().doOnNext(new Consumer<StoryListBean>() {
-//            @Override
-//            public void accept(StoryListBean storyListBean) throws Exception {
-//                //保存第一页数据
-//                StoryDao storyDao = new StoryDao(context);
-//                storyDao.saveStoryList(storyListBean.getStories(), storyListBean.getTop_stories());
-//                SpUtils.put(context, Constant.KEY_CURRENT_DATE, storyListBean.getDate());
-//                SpUtils.put(context, Constant.KEY_HAS_CACHE, true);
-//            }
-//        }).doOnNext(mConsumer);
-//    }
 
 }

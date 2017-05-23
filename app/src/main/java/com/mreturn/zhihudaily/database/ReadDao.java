@@ -1,4 +1,4 @@
-package com.mreturn.zhihudaily.db;
+package com.mreturn.zhihudaily.database;
 
 import android.content.ContentValues;
 import android.content.Context;

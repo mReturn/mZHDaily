@@ -1,5 +1,6 @@
 package com.mreturn.zhihudaily.ui.main;
 
+import com.mreturn.zhihudaily.model.StoriesBean;
 import com.mreturn.zhihudaily.model.StoryListBean;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface HomeView {
 
     void showStories(StoryListBean storyList);
 
-    void showMoreStory(List<StoryListBean.StoriesBean> stories);
+    void showMoreStory(List<StoriesBean> stories);
 
     void showLoadLatestError();
 
