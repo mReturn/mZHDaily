@@ -47,7 +47,7 @@ public abstract class BaseStoryRecycleAdapter<T extends BaseStoryBean> extends R
                 itemView = LayoutInflater.from(parent.getContext()).inflate(getItemViewLayout(), parent, false);
                 return new BaseViewHolder(itemView);
             case TYPE_TITLE:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(getTitleViewLayout(), parent, false);
+                itemView = getTitleView();
                 return new BaseViewHolder(itemView);
             case TYPE_HEADER:
                 return new BaseViewHolder(mHeadView);
@@ -147,7 +147,7 @@ public abstract class BaseStoryRecycleAdapter<T extends BaseStoryBean> extends R
 
     protected abstract int getItemViewLayout();
 
-    protected abstract int getTitleViewLayout();
+    protected abstract View getTitleView();
 
     protected abstract int getNoImgItemLayout();
 

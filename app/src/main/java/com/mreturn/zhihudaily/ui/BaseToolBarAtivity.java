@@ -2,10 +2,12 @@ package com.mreturn.zhihudaily.ui;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.mreturn.zhihudaily.Presenter.BasePresenter;
 import com.mreturn.zhihudaily.R;
@@ -37,12 +39,19 @@ public abstract class BaseToolBarAtivity extends AppCompatActivity {
         mUnbinder = ButterKnife.bind(this);
         mPresenter = createPresenter();
         mProgressDialog = new ProgressDialog(this);
+        prepareData(getIntent());
         initView();
         setListener();
         initData(savedInstanceState);
     }
 
     protected void beforeContentView() {
+    }
+
+    private void prepareData(Intent intent) {
+    }
+
+    protected void setListener() {
     }
 
     protected void showProgressDialog(String msg) {
@@ -70,14 +79,37 @@ public abstract class BaseToolBarAtivity extends AppCompatActivity {
         }
     }
 
+    protected void initBackToolBar(Object title){
+        setSupportActionBar(mToolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+        if (title != null){
+            if (title instanceof Integer)
+                setToolBarTitle((Integer) title);
+
+            if (title instanceof String)
+                setToolBarTitle((String)title);
+        }else{
+            setToolBarTitle("");
+        }
+    }
+
     protected void initToolbar(String title){
         initToolbar();
         setToolBarTitle(title);
     }
 
-    protected void initToolbar(int redId){
+    protected void initToolbar(int resId){
         initToolbar();
-        setToolBarTitle(redId);
+        setToolBarTitle(resId);
     }
 
     public void setToolBarTitle(String title){
@@ -106,8 +138,6 @@ public abstract class BaseToolBarAtivity extends AppCompatActivity {
     protected abstract BasePresenter createPresenter();
 
     protected abstract void initView();
-
-    protected abstract void setListener();
 
     protected abstract void initData(Bundle savedInstanceState);
 }

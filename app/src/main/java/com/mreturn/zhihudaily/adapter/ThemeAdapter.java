@@ -18,6 +18,7 @@ import java.util.List;
  */
 
 public class ThemeAdapter extends BaseStoryRecycleAdapter<StoriesBean> {
+    private View mTitleView;
 
     public ThemeAdapter(List<StoriesBean> datas, Context context) {
         super(datas, context);
@@ -29,8 +30,8 @@ public class ThemeAdapter extends BaseStoryRecycleAdapter<StoriesBean> {
     }
 
     @Override
-    protected int getTitleViewLayout() {
-        return R.layout.item_theme_title;
+    protected View getTitleView() {
+        return mTitleView;
     }
 
     @Override
@@ -65,7 +66,8 @@ public class ThemeAdapter extends BaseStoryRecycleAdapter<StoriesBean> {
         tvTitle.setText(story.getTitle());
     }
 
-    public void addTitle(){
+    public void addTitle(View titleView){
+        mTitleView = titleView;
         mDatas.add(new StoriesBean(StoriesBean.TYPE_TITLE));
         notifyDataSetChanged();
     }

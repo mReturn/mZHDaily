@@ -1,5 +1,6 @@
 package com.mreturn.zhihudaily.ui.theme;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -18,10 +19,12 @@ import com.mreturn.zhihudaily.Presenter.ThemePresenter;
 import com.mreturn.zhihudaily.R;
 import com.mreturn.zhihudaily.adapter.BaseStoryRecycleAdapter;
 import com.mreturn.zhihudaily.adapter.ThemeAdapter;
+import com.mreturn.zhihudaily.app.Constant;
 import com.mreturn.zhihudaily.listener.LoadMoreScrollListener;
 import com.mreturn.zhihudaily.model.StoriesBean;
 import com.mreturn.zhihudaily.model.ThemeBean;
 import com.mreturn.zhihudaily.ui.BaseFragment;
+import com.mreturn.zhihudaily.ui.ediotr.EditorActivity;
 import com.mreturn.zhihudaily.utils.ImageLoader;
 import com.mreturn.zhihudaily.utils.ToastShow;
 
@@ -142,18 +145,28 @@ public class ThemesFragment extends BaseFragment implements ThemeView {
         mAdapter.setHeadView(headView);
     }
 
-    private void setEditorView(ThemeBean themeBean) {
+    private void setEditorView(final ThemeBean themeBean) {
         List<ThemeBean.EditorsBean> editorList = themeBean.getEditors();
         if (editorList != null && editorList.size() > 0) {
             View editorView = LayoutInflater.from(getContext()).
                     inflate(R.layout.item_theme_title, mRecycleView, false);
             LinearLayout llImgs = (LinearLayout) editorView.findViewById(R.id.ll_imgs);
             for (int i = 0; i < editorList.size(); i++) {
-                ImageView iv = (ImageView) LayoutInflater.from(getContext()).inflate(R.layout.item_editor_img,null);
-                ImageLoader.display(getContext(),iv,editorList.get(i).getAvatar());
-                llImgs.addView(iv);
+                View view = LayoutInflater.from(getContext()).inflate(R.layout.item_editor_img,null);
+                ImageView iv = (ImageView) view.findViewById(R.id.iv_editor);
+                ImageLoader.displayCircleImg(iv,editorList.get(i).getAvatar(),R.drawable.comment_avatar);
+                llImgs.addView(view);
             }
-            mAdapter.addTitle();
+            //点击事件
+            editorView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent editorIntent = new Intent(getContext(),EditorActivity.class);
+                    editorIntent.putExtra(Constant.THEME,themeBean);
+                    startActivity(editorIntent);
+                }
+            });
+            mAdapter.addTitle(editorView);
         }
     }
 

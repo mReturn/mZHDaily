@@ -150,12 +150,7 @@ public class MainActivity extends BaseToolBarAtivity implements View.OnClickList
                     .show(fragment)
                     .commit();
         } else {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .hide(currentFragment)
-                    .show(fragment)
-                    .commit();
+            showFragment(fragment, currentFragment);
         }
         currentFragment = fragment;
         setToolBarTitle(title);
@@ -217,17 +212,36 @@ public class MainActivity extends BaseToolBarAtivity implements View.OnClickList
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            if ((System.currentTimeMillis() - exitTime) > 2000) {
-                ToastShow.show("再次点击退出");
-                exitTime = System.currentTimeMillis();
+            if (currentFragment != mHomeFragment && mHomeFragment != null) {
+                //切换到首页
+                navView.setCheckedItem(R.id.menu_main_page);
+                showFragment(mHomeFragment, currentFragment);
+                currentFragment = mHomeFragment;
+                setToolBarTitle(R.string.index);
             } else {
-                System.exit(0);
+
+                if ((System.currentTimeMillis() - exitTime) > 2000) {
+                    ToastShow.show("再次点击退出");
+                    exitTime = System.currentTimeMillis();
+                } else {
+                    System.exit(0);
+                }
             }
         }
+    }
+
+
+    private void showFragment(Fragment showFragment, Fragment hideFragment) {
+        getSupportFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .hide(hideFragment)
+                .show(showFragment)
+                .commit();
     }
 
     @Override
     public void onClick(View view) {
         ToastShow.show("click");
     }
+
 }

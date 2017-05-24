@@ -8,6 +8,7 @@ package com.mreturn.zhihudaily.app;
 public class Constant {
     public static final String BASE_URL = "http://news-at.zhihu.com/api/4/";
     public static final String BASE_SPLASH_URL = "http://news-at.zhihu.com/api/7/";
+    public static final String EDITOR_DETAIL_URL = BASE_URL+"editor/%s/profile-page/android";
 
     //sharedpreference
     public static final String IS_APP_OPENED = "is_app_opened";
@@ -48,7 +49,7 @@ public class Constant {
     public static final String COMMENT_COUNT = "comment_count";
     public static final String LONG_COMMENT_COUNT = "long_comment_count";
     public static final String SHORT_COMMENT_COUNT = "short_comment_count";
-    public static final String EDITOR = "editor";
+    public static final String EDITOR_ID = "editor_id";
     public static final String IMG_URL = "img_url";
     public static final String IMG_URL_LIST = "img_url_list";
 }

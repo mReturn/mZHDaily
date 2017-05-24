@@ -21,11 +21,18 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.main.MainActivity"
-            />
-
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.ediotr.EditorActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.ediotr.EditorDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.story.StoryDetailActivity"
+                  android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

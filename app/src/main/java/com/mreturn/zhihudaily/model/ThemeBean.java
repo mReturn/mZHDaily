@@ -1,5 +1,8 @@
 package com.mreturn.zhihudaily.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -7,7 +10,7 @@ import java.util.List;
  * on 2017/5/23.
  */
 
-public class ThemeBean {
+public class ThemeBean implements Parcelable{
 
 
     /**
@@ -31,6 +34,30 @@ public class ThemeBean {
     private boolean subscribed;
     private List<EditorsBean> editors;
     private List<StoriesBean> stories;
+
+    protected ThemeBean(Parcel in) {
+        background = in.readString();
+        color = in.readInt();
+        description = in.readString();
+        image = in.readString();
+        image_source = in.readString();
+        name = in.readString();
+        subscribed = in.readByte() != 0;
+        editors = in.createTypedArrayList(EditorsBean.CREATOR);
+        stories = in.createTypedArrayList(StoriesBean.CREATOR);
+    }
+
+    public static final Creator<ThemeBean> CREATOR = new Creator<ThemeBean>() {
+        @Override
+        public ThemeBean createFromParcel(Parcel in) {
+            return new ThemeBean(in);
+        }
+
+        @Override
+        public ThemeBean[] newArray(int size) {
+            return new ThemeBean[size];
+        }
+    };
 
     public String getBackground() {
         return background;
@@ -104,7 +131,25 @@ public class ThemeBean {
         this.stories = stories;
     }
 
-    public static class EditorsBean {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(background);
+        parcel.writeInt(color);
+        parcel.writeString(description);
+        parcel.writeString(image);
+        parcel.writeString(image_source);
+        parcel.writeString(name);
+        parcel.writeByte((byte) (subscribed ? 1 : 0));
+        parcel.writeTypedList(editors);
+        parcel.writeTypedList(stories);
+    }
+
+    public static class EditorsBean implements Parcelable{
         /**
          * avatar : http://pic2.zhimg.com/d3b31fa32_m.jpg
          * bio : 好奇心日报
@@ -118,6 +163,26 @@ public class ThemeBean {
         private int id;
         private String name;
         private String url;
+
+        protected EditorsBean(Parcel in) {
+            avatar = in.readString();
+            bio = in.readString();
+            id = in.readInt();
+            name = in.readString();
+            url = in.readString();
+        }
+
+        public static final Creator<EditorsBean> CREATOR = new Creator<EditorsBean>() {
+            @Override
+            public EditorsBean createFromParcel(Parcel in) {
+                return new EditorsBean(in);
+            }
+
+            @Override
+            public EditorsBean[] newArray(int size) {
+                return new EditorsBean[size];
+            }
+        };
 
         public String getAvatar() {
             return avatar;
@@ -157,6 +222,20 @@ public class ThemeBean {
 
         public void setUrl(String url) {
             this.url = url;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeString(avatar);
+            parcel.writeString(bio);
+            parcel.writeInt(id);
+            parcel.writeString(name);
+            parcel.writeString(url);
         }
     }
 
