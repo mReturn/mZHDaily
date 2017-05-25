@@ -20,7 +20,7 @@ function img_replace(source,replaceSource){
 }
 
  // 加载图片，调用loadImage方法，wifi下自动调用
- function onloaded(){
+ function onLoaded(){
     var allImg = document.querySelectorAll("img");
     allImg = Array.prototype.slice.call(allImg,0);
     allImg.forEach(function(image){
@@ -50,7 +50,7 @@ function img_replace(source,replaceSource){
  * 图片加载完调用此方法
  * netUrl 网络地址  loaclUrI 本地地址
  */
- function onImageLoadFinish(netUrl, localUrI){
+ function onImageLoadingComplete(netUrl, localUrI){
     var allImg = document.querySelectorAll("img")；
     allImg = Array.prototype.slice.call(allImg,0);
     allImg.forEach(function(image){

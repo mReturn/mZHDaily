@@ -37,14 +37,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + Constant.UID + " integer primary key autoincrement,"
                 + Constant.ID + " int"
                 + ")";
-        String createLikeTable = "CREATE TABLE "
-                + Constant.TABLE_LIKE
+        String createpraiseTable = "CREATE TABLE "
+                + Constant.TABLE_PRAISE
                 + "("
                 + Constant.UID + " integer primary key autoincrement,"
                 + Constant.ID + " int"
                 + ")";
-        String createStarTable = "CREATE TABLE "
-                + Constant.TABLE_STAR
+        String createCollectTable = "CREATE TABLE "
+                + Constant.TABLE_COLLECT
                 + "("
                 + Constant.UID + " integer primary key autoincrement,"
                 + Constant.ID + " int,"
@@ -55,8 +55,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL(createStoryTable);
         sqLiteDatabase.execSQL(createReadTAble);
-        sqLiteDatabase.execSQL(createLikeTable);
-        sqLiteDatabase.execSQL(createStarTable);
+        sqLiteDatabase.execSQL(createpraiseTable);
+        sqLiteDatabase.execSQL(createCollectTable);
     }
 
     @Override

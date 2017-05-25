@@ -26,7 +26,7 @@ public abstract class BaseToolBarAtivity extends AppCompatActivity {
 
     private Unbinder mUnbinder;
     private ProgressDialog mProgressDialog;
-    protected BasePresenter mPresenter;
+    BasePresenter mPresenter;
 
     @BindView(R.id.toolbar)
     protected Toolbar mToolbar;

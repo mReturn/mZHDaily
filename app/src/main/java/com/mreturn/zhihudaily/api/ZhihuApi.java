@@ -1,6 +1,8 @@
 package com.mreturn.zhihudaily.api;
 
 import com.mreturn.zhihudaily.model.SplashBean;
+import com.mreturn.zhihudaily.model.StoryDetailBean;
+import com.mreturn.zhihudaily.model.StoryExtraBean;
 import com.mreturn.zhihudaily.model.StoryListBean;
 import com.mreturn.zhihudaily.model.ThemeBean;
 
@@ -33,6 +35,14 @@ public interface ZhihuApi {
    //加载更多主题内容
    @GET("theme/{theme_id}/before/{story_id}")
    Observable<ThemeBean> getMoreTheme(@Path("theme_id") int themeId, @Path("story_id") int storyId);
+
+   //详情
+   @GET("story/{id}")
+   Observable<StoryDetailBean> getStoryDetail(@Path("id") int id);
+
+   //附加数据（点赞数，评论数)
+   @GET("story-extra/{id}")
+   Observable<StoryExtraBean> getStoryExtra(@Path("id") int id);
 
 }
 

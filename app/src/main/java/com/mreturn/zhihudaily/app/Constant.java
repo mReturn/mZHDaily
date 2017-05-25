@@ -31,8 +31,8 @@ public class Constant {
     public static final String DB_NAME = "zhihu.db";
     public static final String TABLE_STORY = "t_story";
     public static final String TABLE_READ = "t_read";
-    public static final String TABLE_STAR = "t_star";
-    public static final String TABLE_LIKE = "t_like";
+    public static final String TABLE_COLLECT = "t_collect";
+    public static final String TABLE_PRAISE = "t_praise";
     public static final String UID = "uid";
     public static final String ID = "id";
     public static final String TITLE = "title";
