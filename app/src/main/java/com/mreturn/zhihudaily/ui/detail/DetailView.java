@@ -1,4 +1,4 @@
-package com.mreturn.zhihudaily.ui.story;
+package com.mreturn.zhihudaily.ui.detail;
 
 import com.mreturn.zhihudaily.model.StoryDetailBean;
 import com.mreturn.zhihudaily.model.StoryExtraBean;

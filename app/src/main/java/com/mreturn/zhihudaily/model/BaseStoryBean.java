@@ -19,4 +19,6 @@ public class BaseStoryBean {
     public void setShowType(int showType) {
         this.showType = showType;
     }
+
+
 }

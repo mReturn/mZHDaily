@@ -34,7 +34,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     }
 
     public ImageView getImageView(int viewId){return getView(viewId);}
-    public ImageView getTextView(int viewId){return getView(viewId);}
+    public TextView getTextView(int viewId){return getView(viewId);}
 
     public void setImageResource(int viewId, int resId) {
         ImageView imageView = getView(viewId);

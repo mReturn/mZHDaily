@@ -2,16 +2,14 @@ package com.mreturn.zhihudaily.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.mreturn.zhihudaily.R;
 import com.mreturn.zhihudaily.app.Constant;
 import com.mreturn.zhihudaily.model.StoriesBean;
-import com.mreturn.zhihudaily.ui.story.StoryDetailActivity;
+import com.mreturn.zhihudaily.ui.detail.HomeStoryDetailActivity;
 import com.mreturn.zhihudaily.utils.ImageLoader;
 
 import java.util.List;
@@ -73,22 +71,17 @@ public class HomeStoriesAdapter extends BaseStoryRecycleAdapter<StoriesBean> {
         }
     }
 
-    private void setRootListener(BaseViewHolder holder, final StoriesBean story) {
+    private void setRootListener(final BaseViewHolder holder, final StoriesBean story) {
         holder.setClickListener(R.id.rootview, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, StoryDetailActivity.class);
+                Intent intent = new Intent(mContext, HomeStoryDetailActivity.class);
                 intent.putExtra(Constant.STORY,story);
                 mContext.startActivity(intent);
+                markRead(holder, story);
+
             }
         });
     }
 
-
-    private void setTitle(BaseViewHolder holder, StoriesBean story) {
-        TextView tvTitle = holder.getView(R.id.tv_title);
-        tvTitle.setTextColor(ContextCompat.getColor(mContext, story.isRead() ?
-                R.color.textReaded : android.R.color.black));
-        tvTitle.setText(story.getTitle());
-    }
 }

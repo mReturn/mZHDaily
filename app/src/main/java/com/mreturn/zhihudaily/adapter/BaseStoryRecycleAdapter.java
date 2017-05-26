@@ -1,13 +1,19 @@
 package com.mreturn.zhihudaily.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.mreturn.zhihudaily.R;
+import com.mreturn.zhihudaily.app.Constant;
+import com.mreturn.zhihudaily.database.ReadDao;
 import com.mreturn.zhihudaily.model.BaseStoryBean;
+import com.mreturn.zhihudaily.model.StoriesBean;
+import com.mreturn.zhihudaily.utils.SpUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -40,6 +46,11 @@ public abstract class BaseStoryRecycleAdapter<T extends BaseStoryBean> extends R
     }
 
     @Override
+    public int getItemCount() {
+        return mDatas.size();
+    }
+
+    @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView;
         switch (viewType) {
@@ -67,9 +78,18 @@ public abstract class BaseStoryRecycleAdapter<T extends BaseStoryBean> extends R
         bindData(holder, position, mDatas.get(position));
     }
 
-    @Override
-    public int getItemCount() {
-        return mDatas.size();
+    protected void setTitle(BaseViewHolder holder, StoriesBean story) {
+        TextView tvTitle = holder.getView(R.id.tv_title);
+        boolean isNight = (Boolean) SpUtils.get(mContext, Constant.KEY_NIGHT,false);
+        tvTitle.setTextColor(ContextCompat.getColor(mContext, story.isRead() ?
+                R.color.textReaded : isNight? android.R.color.white:android.R.color.black));
+        tvTitle.setText(story.getTitle());
+    }
+
+    protected void markRead(BaseViewHolder holder, StoriesBean story) {
+        holder.getTextView(R.id.tv_title).setTextColor(ContextCompat.getColor(mContext,R.color.textReaded));
+        ReadDao readDao = new ReadDao(mContext);
+        readDao.save(story.getId());
     }
 
     public void setHeadView(View mHeadView) {

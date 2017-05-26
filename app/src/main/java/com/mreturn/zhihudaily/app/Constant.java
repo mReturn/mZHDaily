@@ -9,6 +9,7 @@ public class Constant {
     public static final String BASE_URL = "http://news-at.zhihu.com/api/4/";
     public static final String BASE_SPLASH_URL = "http://news-at.zhihu.com/api/7/";
     public static final String EDITOR_DETAIL_URL = BASE_URL+"editor/%s/profile-page/android";
+    public static final String EDITOR_URL = "editor/%s/profile-page/android";
 
     //sharedpreference
     public static final String IS_APP_OPENED = "is_app_opened";
@@ -52,4 +53,8 @@ public class Constant {
     public static final String EDITOR_ID = "editor_id";
     public static final String IMG_URL = "img_url";
     public static final String IMG_URL_LIST = "img_url_list";
+
+    //js
+    public static final String NIGHT_JS= "<script src=\"file:///android_asset/night.js\"></script>\n";
+    public static final String BIGFONT_JS = "<script src=\"file:///android_asset/large-font.js\"></script>\n";
 }

@@ -1,5 +1,6 @@
 package com.mreturn.zhihudaily.ui.main;
 
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,10 +16,12 @@ import com.mreturn.zhihudaily.Presenter.HomePresenter;
 import com.mreturn.zhihudaily.R;
 import com.mreturn.zhihudaily.adapter.BaseStoryRecycleAdapter;
 import com.mreturn.zhihudaily.adapter.HomeStoriesAdapter;
+import com.mreturn.zhihudaily.app.Constant;
 import com.mreturn.zhihudaily.listener.LoadMoreScrollListener;
 import com.mreturn.zhihudaily.model.StoriesBean;
 import com.mreturn.zhihudaily.model.StoryListBean;
 import com.mreturn.zhihudaily.ui.BaseFragment;
+import com.mreturn.zhihudaily.ui.detail.HomeStoryDetailActivity;
 import com.mreturn.zhihudaily.utils.CommonUtils;
 import com.mreturn.zhihudaily.utils.ToastShow;
 import com.mreturn.zhihudaily.widget.RollViewPager;
@@ -123,7 +126,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     }
 
     // 初始化轮播图
-    private View intTopView(List<StoryListBean.TopStoriesBean> topStories) {
+    private View intTopView(final List<StoryListBean.TopStoriesBean> topStories) {
         View topView = LayoutInflater.from(getContext()).inflate(R.layout.story_top_view, rvHome, false);
         FrameLayout flTop = (FrameLayout) topView.findViewById(R.id.fl_top);
         LinearLayout llDots = (LinearLayout) topView.findViewById(R.id.ll_dots);
@@ -133,7 +136,11 @@ public class HomeFragment extends BaseFragment implements HomeView {
             @Override
             public void onPagerClick(int position) {
                 //TODO to detail
-                ToastShow.show("to detial");
+                StoryListBean.TopStoriesBean topStory = topStories.get(position);
+                StoriesBean story = new StoriesBean(topStory.getId(),topStory.getTitle(),topStory.getImage(),"");
+                Intent intent = new Intent(getContext(), HomeStoryDetailActivity.class);
+                intent.putExtra(Constant.STORY,story);
+                startActivity(intent);
             }
         });
 

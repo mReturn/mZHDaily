@@ -8,7 +8,7 @@ import com.mreturn.zhihudaily.database.PraiseDao;
 import com.mreturn.zhihudaily.model.StoriesBean;
 import com.mreturn.zhihudaily.model.StoryDetailBean;
 import com.mreturn.zhihudaily.model.StoryExtraBean;
-import com.mreturn.zhihudaily.ui.story.DetailView;
+import com.mreturn.zhihudaily.ui.detail.DetailView;
 import com.mreturn.zhihudaily.utils.TransformUtils;
 
 import java.util.List;

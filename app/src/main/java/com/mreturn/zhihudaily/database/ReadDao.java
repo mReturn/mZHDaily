@@ -25,11 +25,13 @@ public class ReadDao {
     }
 
     public void save(int id) {
-        SQLiteDatabase database = dbHelper.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(Constant.ID, id);
-        database.insert(Constant.TABLE_READ, null, contentValues);
-        database.close();
+        if (!getReadList().contains(id)){
+            SQLiteDatabase database = dbHelper.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(Constant.ID, id);
+            database.insert(Constant.TABLE_READ, null, contentValues);
+            database.close();
+        }
     }
 
     public List<Integer> getReadList() {

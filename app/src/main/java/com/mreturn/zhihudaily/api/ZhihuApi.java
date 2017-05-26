@@ -7,6 +7,7 @@ import com.mreturn.zhihudaily.model.StoryListBean;
 import com.mreturn.zhihudaily.model.ThemeBean;
 
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
@@ -43,6 +44,10 @@ public interface ZhihuApi {
    //附加数据（点赞数，评论数)
    @GET("story-extra/{id}")
    Observable<StoryExtraBean> getStoryExtra(@Path("id") int id);
+
+   //获取html源码
+   @GET("editor/{id}/profile-page/android")
+   Observable<ResponseBody> getEditorHtmlSource(@Path("id") String id);
 
 }
 

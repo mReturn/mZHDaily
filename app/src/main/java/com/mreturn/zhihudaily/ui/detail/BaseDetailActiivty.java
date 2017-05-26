@@ -1,8 +1,7 @@
-package com.mreturn.zhihudaily.ui.story;
+package com.mreturn.zhihudaily.ui.detail;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,7 +25,6 @@ import com.mreturn.zhihudaily.model.StoryDetailBean;
 import com.mreturn.zhihudaily.model.StoryExtraBean;
 import com.mreturn.zhihudaily.ui.BaseToolBarAtivity;
 import com.mreturn.zhihudaily.utils.CommonUtils;
-import com.mreturn.zhihudaily.utils.ImageLoader;
 import com.mreturn.zhihudaily.utils.MyLog;
 import com.mreturn.zhihudaily.utils.SpUtils;
 import com.mreturn.zhihudaily.utils.ToastShow;
@@ -43,26 +41,19 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class StoryDetailActivity extends BaseToolBarAtivity implements DetailView {
+/**
+ * Created by mReturn
+ * on 2017/5/26.
+ */
 
-    @BindView(R.id.iv_top)
-    ImageView ivTop;
-    @BindView(R.id.mask_view)
-    View maskView;
-    @BindView(R.id.tv_source)
-    TextView tvSource;
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
-    @BindView(R.id.ctb_layout)
-    CollapsingToolbarLayout ctbLayout;
-    @BindView(R.id.app_bar)
-    AppBarLayout appBar;
+public abstract class BaseDetailActiivty extends BaseToolBarAtivity implements DetailView{
+
     @BindView(R.id.cl_pb)
     ContentLoadingProgressBar clProgressBar;
     @BindView(R.id.web_story_detail)
     WebView webView;
 
-    StoryDetailPresenter detailPresenter = new StoryDetailPresenter(this);
+    protected StoryDetailPresenter detailPresenter = new StoryDetailPresenter(this);
 
     MenuItem collectItem;
     MenuItem praiseItem;
@@ -79,12 +70,8 @@ public class StoryDetailActivity extends BaseToolBarAtivity implements DetailVie
     String praise = "点赞";
     String praised = "已赞";
     List<String> imgUrlList;
-    String defaultImgAttr = "reimg-src";
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_story_detaila;
-    }
+    String defaultImgAttr = "zhimg-src";
+    protected StoryDetailBean storyDetail;
 
     @Override
     protected BasePresenter createPresenter() {
@@ -95,6 +82,7 @@ public class StoryDetailActivity extends BaseToolBarAtivity implements DetailVie
     protected void initView() {
         initBackToolBar(null);
         CommonUtils.initWebView(this, webView);
+
         //添加js
         webView.addJavascriptInterface(this, "ZhihuDaily");
     }
@@ -126,41 +114,67 @@ public class StoryDetailActivity extends BaseToolBarAtivity implements DetailVie
         detailPresenter.getStoryExtra(storyID);
 
         List<Integer> collectList = detailPresenter.getCollectIdList(this);
+        MyLog.e("detail: collectList ",collectList.size()+"");
         if (collectList.contains(storyID)) {
-            collectItem.setIcon(R.drawable.collect);
+            collectItem.setIcon(R.drawable.collected);
             collectItem.setTitle(collected);
         }
 
         final List<Integer> praiseList = detailPresenter.getPraiseIdList(this);
+        MyLog.e("detail: praiseList ",praiseList.size()+"");
         if (praiseList.contains(storyID)) {
-            praiseItem.setIcon(R.drawable.praised);
             praiseItem.setTitle(praised);
-            ivPraise.setContentDescription("praised");
+            ivPraise.setImageResource(R.drawable.praised);
+            ivPraise.setContentDescription(praised);
         }
+
+        commentView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ToastShow.show("to comment");
+            }
+        });
 
         praiseView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if ("praise".equals(ivPraise.getContentDescription())) {
-                    ivPraise.setContentDescription("praised");
-                    ivPraise.setImageResource(R.drawable.praised);
-                    detailPresenter.savePraise(StoryDetailActivity.this, storyID);
-                } else {
-                    ivPraise.setContentDescription("praise");
-                    ivPraise.setImageResource(R.drawable.praise);
-                    detailPresenter.removePraise(StoryDetailActivity.this, storyID);
-                }
+                clickPraise();
             }
         });
 
         return true;
     }
 
+    //点赞按钮点击
+    private void clickPraise() {
+        int praiseNum = -1;
+        try {
+            praiseNum = Integer.parseInt(tvPraise.getText().toString());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        if ("praise".equals(ivPraise.getContentDescription())) {
+            ivPraise.setContentDescription("praised");
+            ivPraise.setImageResource(R.drawable.praised);
+            detailPresenter.savePraise(BaseDetailActiivty.this, storyID);
+            if (praiseNum > -1)
+                tvPraise.setText((praiseNum+1)+"");
+        } else {
+            ivPraise.setContentDescription("praise");
+            ivPraise.setImageResource(R.drawable.praise);
+            detailPresenter.removePraise(BaseDetailActiivty.this, storyID);
+            if (praiseNum > 0)
+                tvPraise.setText((praiseNum-1)+"");
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_share:
-                ToastShow.show("share");
+                if (storyDetail != null){
+                    showShare(storyDetail.getShare_url());
+                }
                 break;
             case R.id.menu_collect:
                 if (collect.equals(item.getTitle())) {
@@ -169,19 +183,16 @@ public class StoryDetailActivity extends BaseToolBarAtivity implements DetailVie
                     detailPresenter.removeCollect(this, story);
                 }
                 break;
-            case R.id.menu_comment:
-                ToastShow.show("to comment");
-                break;
             case R.id.menu_praise:
                 if (ivPraise != null) {
                     if ("praise".equals(ivPraise.getContentDescription())) {
                         ivPraise.setContentDescription("praised");
                         ivPraise.setImageResource(R.drawable.praised);
-                        detailPresenter.savePraise(StoryDetailActivity.this, storyID);
+                        detailPresenter.savePraise(BaseDetailActiivty.this, storyID);
                     } else {
                         ivPraise.setContentDescription("praise");
                         ivPraise.setImageResource(R.drawable.praise);
-                        detailPresenter.removePraise(StoryDetailActivity.this, storyID);
+                        detailPresenter.removePraise(BaseDetailActiivty.this, storyID);
                     }
                 }
                 break;
@@ -191,83 +202,17 @@ public class StoryDetailActivity extends BaseToolBarAtivity implements DetailVie
         return super.onOptionsItemSelected(item);
     }
 
+    private void showShare(String share_url) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, share_url);
+        intent.setType("text/plain");
+        startActivity(Intent.createChooser(intent, "分享到"));
+    }
+
     @Override
     public void showLoadingView(boolean show) {
         clProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    public void showDetail(StoryDetailBean storyDetail) {
-        setToolBarTitle("");
-        if (TextUtils.isEmpty(storyDetail.getImage())) {
-            ivTop.setVisibility(View.GONE);
-        } else {
-            ivTop.setVisibility(View.VISIBLE);
-            tvTitle.setText(storyDetail.getTitle());
-            tvSource.setText(storyDetail.getImage_source());
-            ImageLoader.display(this, ivTop, storyDetail.getImage());
-        }
-
-        loadHtml(storyDetail);
-    }
-
-    //加载网页内容
-    private void loadHtml(StoryDetailBean storyDetail) {
-        StringBuilder htmlBuilder = new StringBuilder("<!doctype html>\n<html><head>\n<meta charset=\"utf-8\">\n" +
-                "\t<meta name=\"viewport\" content=\"width=device-width,user-scalable=no\">");
-        String content = storyDetail.getBody();
-        String css = "<link rel=\"stylesheet\" href=\"file:///android_asset/css/news.css\" type=\"text/css\">\n";
-        String img_replace = "<script src=\"file:///android_asset/img_replace.js\"></script>\n";
-        String video = "<script src=\"file:///android_asset/video.js\"></script>\n";
-        String zepto = "<script src=\"file:///android_asset/zepto.min.js\"></script>\n";
-        String autoLoadImage = "onload=\"onLoaded()\"";
-
-        //是否自动加载图片
-        boolean autoLoad = true;
-        boolean nightMode = (boolean) SpUtils.get(this, Constant.KEY_NIGHT, false);
-        boolean largeFont = (boolean) SpUtils.get(this, Constant.KEY_BIG_FONT, false);
-        htmlBuilder.append(css)
-                .append(zepto)
-                .append(img_replace)
-                .append(video)
-                .append("</head><body className=\"\"")
-                .append(autoLoad ? autoLoadImage : "")
-                .append(" >")
-                .append(content);
-        if (nightMode) {
-            String night = "<script src=\"file:///android_asset/night.js\"></script>\n";
-            htmlBuilder.append(night);
-        }
-        if (largeFont) {
-            String bigFont = "<script src=\"file:///android_asset/large-font.js\"></script>\n";
-            htmlBuilder.append(bigFont);
-        }
-        htmlBuilder.append("</body></html>");
-        String html = htmlBuilder.toString();
-        html = html.replace("<div class=\"img-place-holder\">", "");
-        html = replaceImgTagFromHTML(html, autoLoad, nightMode);
-        Log.e("html2", html);
-        webView.loadDataWithBaseURL("x-data://base", html, "text/html", "UTF-8", null);
-    }
-
-    //替换 html 中img标签属性
-    private String replaceImgTagFromHTML(String html, boolean autoLoad, boolean nightMode) {
-        imgUrlList = new ArrayList<>();
-        Document doc = Jsoup.parse(html);
-        Elements es = doc.getElementsByTag("img");
-        for (Element e : es) {
-            if (!"avatar".equals(e.attr("class"))) {
-                String imgUrl = e.attr("src");
-                imgUrlList.add(imgUrl);
-                String src = String.format("file:///android_asset/default_pic_content_image_%s_%s.png",
-                        autoLoad ? "loading" : "download",
-                        nightMode ? "dark" : "light");
-                e.attr("src", src);
-                e.attr("reimg-src", imgUrl);
-                e.attr("onclick", "onImageClick(this)");
-            }
-        }
-        return doc.html();
     }
 
     @Override
@@ -317,29 +262,113 @@ public class StoryDetailActivity extends BaseToolBarAtivity implements DetailVie
     }
 
 
-    @JavascriptInterface
-    public void clickToLoadImage(String imgPath) {
-        MyLog.e("click load img: ", imgPath);
+    //加载网页内容
+    protected void loadHtml(StoryDetailBean storyDetail) {
+        StringBuilder htmlBuilder = new StringBuilder("<!doctype html>\n<html><head>\n<meta charset=\"utf-8\">\n" +
+                "\t<meta name=\"viewport\" content=\"width=device-width,user-scalable=no\">");
+        String content = storyDetail.getBody();
+        String css = "<link rel=\"stylesheet\" href=\"file:///android_asset/css/news.css\" type=\"text/css\">\n";
+        String img_replace = "<script src=\"file:///android_asset/img_replace.js\"></script>\n";
+        String video = "<script src=\"file:///android_asset/video.js\"></script>\n";
+        String zepto = "<script src=\"file:///android_asset/zepto.min.js\"></script>\n";
+        String autoLoadImage = "onload=\"onLoaded()\"";
+        String night = "<script src=\"file:///android_asset/night.js\"></script>\n";
+        String bigFont = "<script src=\"file:///android_asset/large-font.js\"></script>\n";
+
+        //是否自动加载图片
+        boolean autoLoad = true;
+        boolean nightMode = (boolean) SpUtils.get(this, Constant.KEY_NIGHT, false);
+        boolean largeFont = (boolean) SpUtils.get(this, Constant.KEY_BIG_FONT, false);
+        htmlBuilder.append(css)
+                .append(zepto)
+                .append(img_replace)
+                .append(video)
+                .append("</head><body className=\"\"")
+                .append(autoLoad ? autoLoadImage : "")
+                .append(" >")
+                .append(content);
+        if (nightMode) {
+            htmlBuilder.append(night);
+        }
+        if (largeFont) {
+            htmlBuilder.append(bigFont);
+        }
+        htmlBuilder.append("</body></html>");
+        String html = htmlBuilder.toString();
+        html = html.replace("<div class=\"img-place-holder\">", "");
+        html = replaceImgTagFromHTML(html, autoLoad, nightMode);
+        Log.e("html2", html);
+        webView.loadDataWithBaseURL("x-data://base", html, "text/html", "UTF-8", null);
     }
 
+    //替换 html 中img标签属性
+    private String replaceImgTagFromHTML(String html, boolean autoLoad, boolean nightMode) {
+        imgUrlList = new ArrayList<>();
+        Document doc = Jsoup.parse(html);
+        Elements es = doc.getElementsByTag("img");
+        for (Element e : es) {
+            if (!"avatar".equals(e.attr("class"))) {
+                String imgUrl = e.attr("src");
+                imgUrlList.add(imgUrl);
+                String src = String.format("file:///android_asset/default_pic_content_image_%s_%s.png",
+                        autoLoad ? "loading" : "download",
+                        nightMode ? "dark" : "light");
+                e.attr("src", src);
+                e.attr(defaultImgAttr, imgUrl);
+                e.attr("onclick", "onImageClick(this)");
+            }
+        }
+        return doc.html();
+    }
+
+
+    // ======================= js ========================
     @JavascriptInterface
-    public void loadImage(final String imgPath) {
-        MyLog.e("load img: ", imgPath);
+    public void clickToLoadImage(final String imgPath) {
+        MyLog.e("detail: ","click load img");
+        if (TextUtils.isEmpty(imgPath))
+            return;
         webView.post(new Runnable() {
             @Override
             public void run() {
-                Glide.with(StoryDetailActivity.this).load(imgPath)
+                Glide.with(BaseDetailActiivty.this).load(imgPath)
                         .downloadOnly(new SimpleTarget<File>() {
                             @Override
                             public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
                                 String str = "file://" + resource.getAbsolutePath();//加载完成的图片地址
                                 try {
-                                    String[] paramArray = new String[2];
-                                    paramArray[0] = URLEncoder.encode(imgPath, "UTF-8");
-                                    paramArray[1] = str;
-                                    onImageLoadingComplete("onImageLoadingComplete", paramArray);
+                                    String[] arrayOfString = new String[2];
+                                    arrayOfString[0] = URLEncoder.encode(imgPath,"UTF-8");//旧url
+                                    arrayOfString[1] = str;
+                                    onImageLoadingComplete("onImageLoadingComplete", arrayOfString);
                                 } catch (Exception e) {
-                                    e.printStackTrace();
+
+                                }
+                            }
+                        });
+            }
+        });
+    }
+
+    @JavascriptInterface
+    public void loadImage(final String imgPath) {
+        MyLog.e("detail: ","load img");
+        if (TextUtils.isEmpty(imgPath))
+            return;
+        webView.post(new Runnable() {
+            @Override
+            public void run() {
+                Glide.with(BaseDetailActiivty.this).load(imgPath)
+                        .downloadOnly(new SimpleTarget<File>() {
+                            @Override
+                            public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
+                                String str = "file://" + resource.getAbsolutePath();//加载完成的图片地址
+                                try {
+                                    String[] arrayOfString = new String[2];
+                                    arrayOfString[0] = URLEncoder.encode(imgPath,"UTF-8");//旧url
+                                    arrayOfString[1] = str;
+                                    onImageLoadingComplete("onImageLoadingComplete", arrayOfString);
+                                } catch (Exception e) {
                                 }
                             }
                         });
@@ -349,11 +378,11 @@ public class StoryDetailActivity extends BaseToolBarAtivity implements DetailVie
 
     @JavascriptInterface
     public void openImage(String imgPath) {
-        ToastShow.show("open img");
-        MyLog.e("open img: ", imgPath);
+        MyLog.e("detail","open img");
     }
 
-    public void onImageLoadingComplete(String funName, String[] paramArray) {
+    public final void onImageLoadingComplete(String funName, String[] paramArray) {
+        MyLog.e("detail: ","img lode complete");
         String str = "'" + TextUtils.join("','", paramArray) + "'";
         webView.loadUrl("javascript:" + funName + "(" + str + ");");
     }

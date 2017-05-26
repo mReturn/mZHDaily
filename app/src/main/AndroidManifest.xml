@@ -31,7 +31,10 @@
             android:name=".ui.ediotr.EditorDetailActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.story.StoryDetailActivity"
+            android:name=".ui.detail.HomeStoryDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.detail.ThemeStoryDetailActivity"
             android:screenOrientation="portrait"/>
 
     </application>
