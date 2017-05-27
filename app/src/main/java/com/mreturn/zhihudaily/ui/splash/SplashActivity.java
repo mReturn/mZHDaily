@@ -18,6 +18,7 @@ import com.mreturn.zhihudaily.app.Constant;
 import com.mreturn.zhihudaily.model.SplashBean;
 import com.mreturn.zhihudaily.ui.main.MainActivity;
 import com.mreturn.zhihudaily.utils.CommonUtils;
+import com.mreturn.zhihudaily.utils.MyLog;
 import com.mreturn.zhihudaily.utils.SpUtils;
 
 import java.io.File;
@@ -88,6 +89,7 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
                             SpUtils.put(SplashActivity.this,Constant.KEY_TODAY, CommonUtils.getToday());
                             //缓存图片
                             SpUtils.put(SplashActivity.this,Constant.SPLASH_IMG_PATH,resource.getAbsolutePath());
+                            MyLog.e("splash: resource1 ",resource.getAbsolutePath());
                         }
                     });
         }

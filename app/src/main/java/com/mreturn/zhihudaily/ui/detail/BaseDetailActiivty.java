@@ -1,6 +1,7 @@
 package com.mreturn.zhihudaily.ui.detail;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,6 +37,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.File;
+import java.io.Serializable;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,9 +85,20 @@ public abstract class BaseDetailActiivty extends BaseToolBarAtivity implements D
     protected void initView() {
         initBackToolBar(null);
         CommonUtils.initWebView(this, webView);
-
         //添加js
         webView.addJavascriptInterface(this, "ZhihuDaily");
+
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                MyLog.e("editor1: ", url);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                return true;
+            }
+        });
     }
 
     @Override
@@ -379,6 +393,10 @@ public abstract class BaseDetailActiivty extends BaseToolBarAtivity implements D
     @JavascriptInterface
     public void openImage(String imgPath) {
         MyLog.e("detail","open img");
+        Intent intent = new Intent(this,ImgGalleryactivity.class);
+        intent.putExtra(Constant.IMG_URL,imgPath);
+        intent.putExtra(Constant.IMG_URL_LIST, (Serializable) imgUrlList);
+        startActivity(intent);
     }
 
     public final void onImageLoadingComplete(String funName, String[] paramArray) {

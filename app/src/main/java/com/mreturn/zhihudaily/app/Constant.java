@@ -1,11 +1,14 @@
 package com.mreturn.zhihudaily.app;
 
+import android.os.Environment;
+
 /**
  * Created by mReturn
  * on 2017/5/17.
  */
 
 public class Constant {
+    //api
     public static final String BASE_URL = "http://news-at.zhihu.com/api/4/";
     public static final String BASE_SPLASH_URL = "http://news-at.zhihu.com/api/7/";
     public static final String EDITOR_DETAIL_URL = BASE_URL+"editor/%s/profile-page/android";
@@ -57,4 +60,8 @@ public class Constant {
     //js
     public static final String NIGHT_JS= "<script src=\"file:///android_asset/night.js\"></script>\n";
     public static final String BIGFONT_JS = "<script src=\"file:///android_asset/large-font.js\"></script>\n";
+
+    //sd
+    public static final String SD_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() ;
+    public static final String DOWNLOAD_PATH = SD_PATH+ "/_ZhiHuDaily/download/";
 }

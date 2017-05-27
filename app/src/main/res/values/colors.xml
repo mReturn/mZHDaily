@@ -12,6 +12,7 @@
 
     <color name="white">#ffffffff</color>
     <color name="gray_1">#ffc0c0c0</color>
+    <color name="gray_cardview">#cccccc</color>
 
     <color name="activity_background_dark">#ff343434</color>
     <color name="activity_background_gray_dark">#ff343434</color>

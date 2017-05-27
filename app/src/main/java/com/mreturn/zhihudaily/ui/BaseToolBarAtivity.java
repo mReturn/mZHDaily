@@ -48,7 +48,7 @@ public abstract class BaseToolBarAtivity extends AppCompatActivity {
     protected void beforeContentView() {
     }
 
-    private void prepareData(Intent intent) {
+    protected void prepareData(Intent intent) {
     }
 
     protected void setListener() {

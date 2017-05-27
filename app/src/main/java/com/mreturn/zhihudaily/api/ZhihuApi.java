@@ -10,6 +10,7 @@ import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Url;
 
 /**
  * Created by mReturn
@@ -45,9 +46,13 @@ public interface ZhihuApi {
    @GET("story-extra/{id}")
    Observable<StoryExtraBean> getStoryExtra(@Path("id") int id);
 
-   //获取html源码
-   @GET("editor/{id}/profile-page/android")
-   Observable<ResponseBody> getEditorHtmlSource(@Path("id") String id);
+   //获取网页html源码
+   @GET
+   Observable<String> getHtmlSource(@Url String url);
+
+   //下载图片
+   @GET
+   Observable<ResponseBody> downloadImg(@Url String imgeUrl);
 
 }
 

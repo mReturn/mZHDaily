@@ -10,13 +10,14 @@
     android:layout_marginRight="8dp"
     android:layout_marginTop="4dp"
     card_view:cardCornerRadius="4dp"
-    card_view:cardElevation="2dp"
+    card_view:cardElevation="1dp"
     >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="8dp"
         android:orientation="horizontal"
+        android:background="@drawable/ripple"
         >
         <TextView
             android:id="@+id/tv_title"

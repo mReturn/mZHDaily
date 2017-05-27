@@ -36,6 +36,9 @@
         <activity
             android:name=".ui.detail.ThemeStoryDetailActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.detail.ImgGalleryactivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 
