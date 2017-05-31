@@ -4,13 +4,11 @@ import com.mreturn.zhihudaily.app.Constant;
 import com.mreturn.zhihudaily.app.ZhiHuApplication;
 import com.mreturn.zhihudaily.utils.NetUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -72,8 +70,8 @@ public class ZhihuClient {
                 builder.readTimeout(DEFAULT_TIMEOUT,TimeUnit.SECONDS);
                 builder.writeTimeout(DEFAULT_TIMEOUT,TimeUnit.SECONDS);
                 //添加缓存
-                File cacheFile = new File(ZhiHuApplication.appContext.getCacheDir(),"okHttpCache");
-                builder.cache(new Cache(cacheFile,DEFAULT_CACHE_SIZE));
+//                File cacheFile = new File(ZhiHuApplication.appContext.getCacheDir(),"okHttpCache");
+//                builder.cache(new Cache(cacheFile,DEFAULT_CACHE_SIZE));
                 //添加拦截器
                 builder.addInterceptor(new Interceptor() {
                     @Override
@@ -109,8 +107,8 @@ public class ZhihuClient {
                 builder.readTimeout(DEFAULT_TIMEOUT,TimeUnit.SECONDS);
                 builder.writeTimeout(DEFAULT_TIMEOUT,TimeUnit.SECONDS);
                 //添加缓存
-                File cacheFile = new File(ZhiHuApplication.appContext.getCacheDir(),"okHttpCache");
-                builder.cache(new Cache(cacheFile,DEFAULT_CACHE_SIZE));
+//                File cacheFile = new File(ZhiHuApplication.appContext.getCacheDir(),"okHttpCache");
+//                builder.cache(new Cache(cacheFile,DEFAULT_CACHE_SIZE));
                 //添加拦截器
                 builder.addInterceptor(new Interceptor() {
                     @Override
@@ -138,6 +136,7 @@ public class ZhihuClient {
     }
 
 
+    //让返回值为String
     static class StringConverFactory extends Converter.Factory{
         final MediaType MEDIA_TYPE = MediaType.parse("text/plain");
 

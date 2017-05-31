@@ -26,6 +26,7 @@ import com.mreturn.zhihudaily.model.StoriesBean;
 import com.mreturn.zhihudaily.model.StoryDetailBean;
 import com.mreturn.zhihudaily.model.StoryExtraBean;
 import com.mreturn.zhihudaily.ui.BaseToolBarAtivity;
+import com.mreturn.zhihudaily.ui.comment.CommentActivity;
 import com.mreturn.zhihudaily.utils.CommonUtils;
 import com.mreturn.zhihudaily.utils.MyLog;
 import com.mreturn.zhihudaily.utils.SpUtils;
@@ -75,6 +76,7 @@ public abstract class BaseDetailActiivty extends BaseToolBarAtivity implements D
     List<String> imgUrlList;
     String defaultImgAttr = "zhimg-src";
     protected StoryDetailBean storyDetail;
+    StoryExtraBean storyExtra;
 
     @Override
     protected BasePresenter createPresenter() {
@@ -145,7 +147,14 @@ public abstract class BaseDetailActiivty extends BaseToolBarAtivity implements D
         commentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastShow.show("to comment");
+                Intent intent = new Intent(BaseDetailActiivty.this, CommentActivity.class);
+                intent.putExtra(Constant.STORY_ID, storyID);
+                if (storyExtra != null) {
+                    intent.putExtra(Constant.COMMENT_COUNT, storyExtra.getComments());
+                    intent.putExtra(Constant.LONG_COMMENT_COUNT, storyExtra.getLong_comments());
+                    intent.putExtra(Constant.SHORT_COMMENT_COUNT, storyExtra.getShort_comments());
+                }
+                startActivity(intent);
             }
         });
 
@@ -232,6 +241,7 @@ public abstract class BaseDetailActiivty extends BaseToolBarAtivity implements D
     @Override
     public void showExtra(StoryExtraBean storyExtra) {
         MyLog.e("detail ", "show extra");
+        this.storyExtra = storyExtra;
         tvComment.setText(formatNum(storyExtra.getComments()));
         tvPraise.setText(formatNum(storyExtra.getPopularity()));
     }

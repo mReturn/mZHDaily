@@ -64,6 +64,7 @@ public abstract class BaseToolBarAtivity extends AppCompatActivity {
                 ToastShow.show("cancle");
             }
         });
+        mProgressDialog.show();
     }
 
     protected void dismissProgressDialog() {

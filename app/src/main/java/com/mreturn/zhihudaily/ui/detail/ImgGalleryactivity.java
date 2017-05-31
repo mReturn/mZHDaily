@@ -103,7 +103,7 @@ public class ImgGalleryactivity extends BaseToolBarAtivity {
     private void downloadImg(final String url) {
 //        url = "http://img.78dian.com/user/forum/201703/1_1488435170_86662.gif";
         MyLog.e("download ： ",url);
-        ZhihuClient.getZhihuApi().downloadImg(url)
+        ZhihuClient.getZhihuApi().downloadFile(url)
                 .map(new Function<ResponseBody, String>() {
                     @Override
                     public String apply(ResponseBody responseBody) throws Exception {

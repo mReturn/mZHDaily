@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.mreturn.zhihudaily.R;
@@ -38,8 +39,8 @@ public class HomeStoriesAdapter extends BaseStoryRecycleAdapter<StoriesBean> {
     }
 
     @Override
-    protected View getTitleView() {
-        return LayoutInflater.from(mContext).inflate(R.layout.item_story_title, null, false);
+    protected View getTitleView(ViewGroup parent) {
+        return LayoutInflater.from(mContext).inflate(R.layout.item_story_title, parent, false);
     }
 
     @Override

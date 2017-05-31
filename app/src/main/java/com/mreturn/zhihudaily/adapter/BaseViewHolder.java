@@ -1,6 +1,7 @@
 package com.mreturn.zhihudaily.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.ImageView;
@@ -30,7 +31,9 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
 
     public void setText(int viewId,String text){
         TextView textView = getView(viewId);
-        textView.setText(text);
+        if (!TextUtils.isEmpty(text)){
+            textView.setText(text);
+        }
     }
 
     public ImageView getImageView(int viewId){return getView(viewId);}

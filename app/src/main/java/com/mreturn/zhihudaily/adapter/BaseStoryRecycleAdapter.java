@@ -36,6 +36,7 @@ public abstract class BaseStoryRecycleAdapter<T extends BaseStoryBean> extends R
     public static final int TYPE_HEADER = 2;
     public static final int TYPE_FOOTER = 3;
     protected static final int TYPE_NO_IMG_ITEM = 4;
+    protected static final int TYPE_EMPTY_VIEW = 5;
 
     public static final int STATE_LOADING = -1;
     public static final int STATE_NO_FOOTER = -2;
@@ -58,7 +59,7 @@ public abstract class BaseStoryRecycleAdapter<T extends BaseStoryBean> extends R
                 itemView = LayoutInflater.from(parent.getContext()).inflate(getItemViewLayout(), parent, false);
                 return new BaseViewHolder(itemView);
             case TYPE_TITLE:
-                itemView = getTitleView();
+                itemView = getTitleView(parent);
                 return new BaseViewHolder(itemView);
             case TYPE_HEADER:
                 return new BaseViewHolder(mHeadView);
@@ -69,8 +70,13 @@ public abstract class BaseStoryRecycleAdapter<T extends BaseStoryBean> extends R
                 itemView = LayoutInflater.from(parent.getContext()).inflate(getNoImgItemLayout(), parent, false);
                 return new BaseViewHolder(itemView);
             default:
-                return null;
+                itemView = LayoutInflater.from(parent.getContext()).inflate(getDefaultItemLayout(), parent, false);
+                return new BaseViewHolder (itemView);
         }
+    }
+
+    protected int getDefaultItemLayout() {
+        return -1;
     }
 
     @Override
@@ -167,7 +173,7 @@ public abstract class BaseStoryRecycleAdapter<T extends BaseStoryBean> extends R
 
     protected abstract int getItemViewLayout();
 
-    protected abstract View getTitleView();
+    protected abstract View getTitleView(ViewGroup parent);
 
     protected abstract int getNoImgItemLayout();
 

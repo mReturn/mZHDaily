@@ -3,6 +3,7 @@ package com.mreturn.zhihudaily.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.mreturn.zhihudaily.R;
@@ -31,7 +32,7 @@ public class ThemeAdapter extends BaseStoryRecycleAdapter<StoriesBean> {
     }
 
     @Override
-    protected View getTitleView() {
+    protected View getTitleView(ViewGroup parent) {
         return mTitleView;
     }
 

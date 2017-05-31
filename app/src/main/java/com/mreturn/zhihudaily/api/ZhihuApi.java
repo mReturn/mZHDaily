@@ -1,5 +1,6 @@
 package com.mreturn.zhihudaily.api;
 
+import com.mreturn.zhihudaily.model.CommentBean;
 import com.mreturn.zhihudaily.model.SplashBean;
 import com.mreturn.zhihudaily.model.StoryDetailBean;
 import com.mreturn.zhihudaily.model.StoryExtraBean;
@@ -50,9 +51,25 @@ public interface ZhihuApi {
    @GET
    Observable<String> getHtmlSource(@Url String url);
 
-   //下载图片
+   //下载文件
    @GET
-   Observable<ResponseBody> downloadImg(@Url String imgeUrl);
+   Observable<ResponseBody> downloadFile(@Url String fileUrl);
+
+   //获取长评论
+   @GET("story/{id}/long-comments")
+   Observable<CommentBean> getLongComments (@Path("id") int storyId);
+
+   //获取更多长评论
+   @GET("story/{story_id}/long-comments/before/{comment_id}")
+   Observable<CommentBean> getMoreLongComment(@Path("story_id") int storyId,@Path("comment_id") int commentId);
+
+   //获取短评论
+   @GET("story/{id}/short-comments")
+   Observable<CommentBean> getShortComments(@Path("id") int storyId);
+
+   //获取更多短评论
+   @GET("story/{story_id}/short-comments/before/{comment_id}")
+   Observable<CommentBean> getMoreShortComment(@Path("story_id") int storyId, @Path("comment_id") int commentId);
 
 }
 

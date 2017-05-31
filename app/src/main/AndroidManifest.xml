@@ -39,6 +39,9 @@
         <activity
             android:name=".ui.detail.ImgGalleryactivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.comment.CommentActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 

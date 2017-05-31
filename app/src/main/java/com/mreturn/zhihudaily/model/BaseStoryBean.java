@@ -6,6 +6,7 @@ package com.mreturn.zhihudaily.model;
  */
 
 public class BaseStoryBean {
+    protected static final int TYPE_ITEM = 0;
     public static final int TYPE_TITLE = 1;
     public static final int TYPE_HEADER = 2;
     public static final int TYPE_FOOTER = 3;

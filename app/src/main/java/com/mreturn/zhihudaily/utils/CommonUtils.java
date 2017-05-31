@@ -57,6 +57,17 @@ public class CommonUtils {
 
     }
 
+
+    /**
+     * 时间戳转换为日期格式
+     * @param time
+     * @return  MM-dd HH:mm
+     */
+    public static String timestamp2Date(long time) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm", Locale.CHINA);
+        return sdf.format(new Date(time * 1000));
+    }
+
     public static void initWebView(Context context, WebView webView) {
         WebSettings webSettings = webView.getSettings();
         //设置自适应屏幕，两者合用
