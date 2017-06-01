@@ -24,11 +24,11 @@ public class CollectDao {
         dbHelper = new DataBaseHelper(context);
     }
 
-    public boolean save(StoriesBean story) {
+    public boolean save(StoriesBean story,String extra) {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(Constant.ID, story.getId());
-        contentValues.put(Constant.TITLE, story.getTitle());
+        contentValues.put(Constant.TITLE, story.getTitle()+extra);
         contentValues.put(Constant.IMAGE, story.getImages() == null ? null : story.getImages().get(0));
         contentValues.put(Constant.MULTI_PIC, story.isMultipic() ? 1 : 0);
         long insert = database.insert(Constant.TABLE_COLLECT, null, contentValues);
@@ -56,7 +56,7 @@ public class CollectDao {
                 String title = cursor.getString(cursor.getColumnIndex(Constant.TITLE));
                 String image = cursor.getString(cursor.getColumnIndex(Constant.IMAGE));
                 int multiPic = cursor.getInt(cursor.getColumnIndex(Constant.MULTI_PIC));
-                stories.add(new StoriesBean(id, title, image, null, multiPic == 1, false));
+                stories.add(new StoriesBean(id, title, image, null, multiPic == 1, true));
             }
         } catch (Exception e) {
             e.printStackTrace();

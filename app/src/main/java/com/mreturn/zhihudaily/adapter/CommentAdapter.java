@@ -1,16 +1,22 @@
 package com.mreturn.zhihudaily.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.mreturn.zhihudaily.Presenter.CommentPresenter;
 import com.mreturn.zhihudaily.R;
+import com.mreturn.zhihudaily.app.Constant;
 import com.mreturn.zhihudaily.model.CommentBean;
 import com.mreturn.zhihudaily.utils.ImageLoader;
+import com.mreturn.zhihudaily.utils.SpUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,11 +30,17 @@ public class CommentAdapter extends BaseStoryRecycleAdapter<CommentBean.Comments
     int storyId;
     boolean isShorExpand ;
     int shortCountItemPos ;
+    LinearLayoutManager layoutManager;
 
     public CommentAdapter(List<CommentBean.Comments> datas, Context context, CommentPresenter presenter, int storyId) {
         super(datas, context);
         this.commentPresenter = presenter;
         this.storyId = storyId;
+    }
+
+
+    public void setLayoutManager(LinearLayoutManager layoutManager) {
+        this.layoutManager = layoutManager;
     }
 
     public boolean isShorExpand() {
@@ -75,9 +87,15 @@ public class CommentAdapter extends BaseStoryRecycleAdapter<CommentBean.Comments
                             public void onClick(View view) {
                                 if (isShorExpand){
                                     ivShort.setImageResource(R.drawable.comment_icon_fold);
+                                    removeShortComment();
                                 }else{
                                     commentPresenter.getShortComment(storyId);
                                     ivShort.setImageResource(R.drawable.comment_icon_fold1);
+                                    if (layoutManager != null){
+                                        layoutManager.scrollToPositionWithOffset(shortCountItemPos,0);
+                                        layoutManager.setStackFromEnd(true);
+                                    }
+
                                 }
                                 isShorExpand = !isShorExpand;
                             }
@@ -87,11 +105,16 @@ public class CommentAdapter extends BaseStoryRecycleAdapter<CommentBean.Comments
                     }
                     break;
                 case TYPE_ITEM:
+                    boolean isNight = (Boolean) SpUtils.get(mContext, Constant.KEY_NIGHT,false);
+                    TextView tvName = holder.getTextView(R.id.tv_name);
+                    TextView tvContent = holder.getTextView(R.id.tv_content);
                     ImageLoader.displayCircleImg(holder.getImageView(R.id.iv_avatar),comments.getAvatar());
                     holder.setText(R.id.tv_name,comments.getAuthor());
                     holder.setText(R.id.tv_content,comments.getContent());
                     holder.setText(R.id.tv_date,comments.getTime());
                     holder.setText(R.id.tv_praise_count,comments.getLikes()+"");
+                    tvName.setTextColor(ContextCompat.getColor(mContext,isNight? android.R.color.white:android.R.color.black));
+                    tvContent.setTextColor(ContextCompat.getColor(mContext,isNight? R.color.textReaded:android.R.color.black));
                     break;
                 default:
                     break;
@@ -114,7 +137,22 @@ public class CommentAdapter extends BaseStoryRecycleAdapter<CommentBean.Comments
             mDatas.addAll(shortCountItemPos,commentsList);
             notifyDataSetChanged();
         }
+    }
 
+    private void removeShortComment(){
+        if (mDatas.size()>shortCountItemPos){
+            List<CommentBean.Comments> list = new ArrayList<>();
+            for (int i = 0 ; i<= shortCountItemPos;i++){
+                list.add(mDatas.get(i));
+            }
+            mDatas.clear();
+            mDatas.addAll(list);
+            notifyDataSetChanged();
+            if (layoutManager != null){
+                layoutManager.scrollToPositionWithOffset(0,0);
+                layoutManager.setStackFromEnd(true);
+            }
+        }
     }
 
 }

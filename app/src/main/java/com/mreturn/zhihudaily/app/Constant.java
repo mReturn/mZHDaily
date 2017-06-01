@@ -43,6 +43,7 @@ public class Constant {
     public static final String IMAGE = "image";
     public static final String DATE = "date";
     public static final String MULTI_PIC = "multi_pic";
+    public static final String NO_IMG = "no_img"; //是否有头图
     public static final String TOP = "top";
     public static final String READ = "read";
 

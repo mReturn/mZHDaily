@@ -11,6 +11,7 @@ import com.mreturn.zhihudaily.R;
 import com.mreturn.zhihudaily.app.Constant;
 import com.mreturn.zhihudaily.model.StoriesBean;
 import com.mreturn.zhihudaily.ui.detail.HomeStoryDetailActivity;
+import com.mreturn.zhihudaily.ui.detail.ThemeStoryDetailActivity;
 import com.mreturn.zhihudaily.utils.ImageLoader;
 
 import java.util.List;
@@ -56,14 +57,15 @@ public class HomeStoriesAdapter extends BaseStoryRecycleAdapter<StoriesBean> {
                     holder.setText(R.id.tv_title, story.getDate());
                     break;
                 case TYPE_ITEM:
+                    setRootListener(holder, story);
                     setTitle(holder, story);
                     ImageLoader.display(mContext, (ImageView) holder.getView(R.id.iv_thumb),
                             story.getImages().get(0));
                     holder.getView(R.id.iv_multipic).setVisibility(story.isMultipic() ?
                             View.VISIBLE : View.GONE);
-                    setRootListener(holder, story);
                     break;
                 case TYPE_NO_IMG_ITEM:
+                    setRootListener(holder, story);
                     setTitle(holder, story);
                     break;
                 default:
@@ -76,7 +78,12 @@ public class HomeStoriesAdapter extends BaseStoryRecycleAdapter<StoriesBean> {
         holder.setClickListener(R.id.rootview, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, HomeStoryDetailActivity.class);
+                Intent intent;
+                if (story.getTitle().contains(Constant.NO_IMG)){
+                    intent = new Intent(mContext, ThemeStoryDetailActivity.class);
+                }else{
+                    intent = new Intent(mContext, HomeStoryDetailActivity.class);
+                }
                 intent.putExtra(Constant.STORY,story);
                 mContext.startActivity(intent);
                 markRead(holder, story);

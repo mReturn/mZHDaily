@@ -1,5 +1,6 @@
 package com.mreturn.zhihudaily.ui.main;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,6 +21,8 @@ import com.mreturn.zhihudaily.Presenter.BasePresenter;
 import com.mreturn.zhihudaily.R;
 import com.mreturn.zhihudaily.app.Constant;
 import com.mreturn.zhihudaily.ui.BaseToolBarAtivity;
+import com.mreturn.zhihudaily.ui.collect.CollectActivity;
+import com.mreturn.zhihudaily.ui.setting.SettingActivity;
 import com.mreturn.zhihudaily.ui.theme.ThemesFragment;
 import com.mreturn.zhihudaily.utils.SpUtils;
 import com.mreturn.zhihudaily.utils.ToastShow;
@@ -199,7 +202,7 @@ public class MainActivity extends BaseToolBarAtivity implements View.OnClickList
                 recreate(); //移除重新创建 避免多个同时存在
                 return true;
             case R.id.action_setting:
-                ToastShow.show("setting");
+                startActivity(new Intent(this, SettingActivity.class));
                 break;
             default:
                 break;
@@ -241,7 +244,16 @@ public class MainActivity extends BaseToolBarAtivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        ToastShow.show("click");
+        switch (view.getId()){
+            case R.id.tv_collect:
+                startActivity(new Intent(this, CollectActivity.class));
+                break;
+            case R.id.tv_download:
+                ToastShow.show("download");
+                break;
+            default:
+                break;
+        }
     }
 
 }

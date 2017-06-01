@@ -42,6 +42,12 @@
         <activity
             android:name=".ui.comment.CommentActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.collect.CollectActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.setting.SettingActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 

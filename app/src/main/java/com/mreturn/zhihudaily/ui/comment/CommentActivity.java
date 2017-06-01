@@ -64,10 +64,12 @@ public class CommentActivity extends BaseToolBarAtivity implements CommentView{
     @Override
     protected void initView() {
         initBackToolBar(commentCount+" 条点评");
-        rvComment.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        rvComment.setLayoutManager(layoutManager);
         rvComment.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         rvComment.setHasFixedSize(true);
         commentAdapter = new CommentAdapter(new ArrayList<CommentBean.Comments>(0),this,commentPresenter,storyId);
+        commentAdapter.setLayoutManager(layoutManager);
         rvComment.setAdapter(commentAdapter);
     }
 

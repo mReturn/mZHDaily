@@ -3,6 +3,7 @@ package com.mreturn.zhihudaily.adapter;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,7 +90,12 @@ public abstract class BaseStoryRecycleAdapter<T extends BaseStoryBean> extends R
         boolean isNight = (Boolean) SpUtils.get(mContext, Constant.KEY_NIGHT,false);
         tvTitle.setTextColor(ContextCompat.getColor(mContext, story.isRead() ?
                 R.color.textReaded : isNight? android.R.color.white:android.R.color.black));
-        tvTitle.setText(story.getTitle());
+        if (!TextUtils.isEmpty(story.getTitle()) && story.getTitle().contains(Constant.NO_IMG)){
+            tvTitle.setText(story.getTitle().replace(Constant.NO_IMG,""));
+        }else{
+            tvTitle.setText(story.getTitle());
+        }
+
     }
 
     protected void markRead(BaseViewHolder holder, StoriesBean story) {

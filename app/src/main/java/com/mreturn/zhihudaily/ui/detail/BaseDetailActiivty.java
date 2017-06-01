@@ -29,6 +29,7 @@ import com.mreturn.zhihudaily.ui.BaseToolBarAtivity;
 import com.mreturn.zhihudaily.ui.comment.CommentActivity;
 import com.mreturn.zhihudaily.utils.CommonUtils;
 import com.mreturn.zhihudaily.utils.MyLog;
+import com.mreturn.zhihudaily.utils.NetUtils;
 import com.mreturn.zhihudaily.utils.SpUtils;
 import com.mreturn.zhihudaily.utils.ToastShow;
 
@@ -201,23 +202,27 @@ public abstract class BaseDetailActiivty extends BaseToolBarAtivity implements D
                 break;
             case R.id.menu_collect:
                 if (collect.equals(item.getTitle())) {
-                    detailPresenter.collectStory(this, story);
+                    if (!TextUtils.isEmpty(storyDetail.getImage())){
+                        detailPresenter.collectStory(this, story,"");
+                    }else{
+                        detailPresenter.collectStory(this, story,Constant.NO_IMG);
+                    }
                 } else {
                     detailPresenter.removeCollect(this, story);
                 }
                 break;
             case R.id.menu_praise:
-                if (ivPraise != null) {
-                    if ("praise".equals(ivPraise.getContentDescription())) {
-                        ivPraise.setContentDescription("praised");
-                        ivPraise.setImageResource(R.drawable.praised);
-                        detailPresenter.savePraise(BaseDetailActiivty.this, storyID);
-                    } else {
-                        ivPraise.setContentDescription("praise");
-                        ivPraise.setImageResource(R.drawable.praise);
-                        detailPresenter.removePraise(BaseDetailActiivty.this, storyID);
-                    }
-                }
+//                if (ivPraise != null) {
+//                    if ("praise".equals(ivPraise.getContentDescription())) {
+//                        ivPraise.setContentDescription("praised");
+//                        ivPraise.setImageResource(R.drawable.praised);
+//                        detailPresenter.savePraise(BaseDetailActiivty.this, storyID);
+//                    } else {
+//                        ivPraise.setContentDescription("praise");
+//                        ivPraise.setImageResource(R.drawable.praise);
+//                        detailPresenter.removePraise(BaseDetailActiivty.this, storyID);
+//                    }
+//                }
                 break;
             default:
                 break;
@@ -300,7 +305,7 @@ public abstract class BaseDetailActiivty extends BaseToolBarAtivity implements D
         String bigFont = "<script src=\"file:///android_asset/large-font.js\"></script>\n";
 
         //是否自动加载图片
-        boolean autoLoad = true;
+        boolean autoLoad = NetUtils.isWifi(this) || !(boolean) SpUtils.get(this, Constant.KEY_NO_LOAD_IMAGE, false);
         boolean nightMode = (boolean) SpUtils.get(this, Constant.KEY_NIGHT, false);
         boolean largeFont = (boolean) SpUtils.get(this, Constant.KEY_BIG_FONT, false);
         htmlBuilder.append(css)

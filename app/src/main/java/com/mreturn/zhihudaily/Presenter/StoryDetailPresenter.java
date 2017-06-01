@@ -84,9 +84,9 @@ public class StoryDetailPresenter extends BasePresenter {
 
 
     //-------------------------------collect---------------------------------------
-    public void collectStory(Context context, StoriesBean story) {
+    public void collectStory(Context context, StoriesBean story, String type) {
         CollectDao collectDao = new CollectDao(context);
-        boolean success = collectDao.save(story);
+        boolean success = collectDao.save(story,type);
         if (success) {
             detailView.setCollectState(true);
         } else {

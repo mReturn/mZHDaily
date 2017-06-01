@@ -64,6 +64,8 @@
     <string name="key_clear_cache">clear_cache</string>
     <string name="key_notice">notice</string>
     <string name="key_developer">developer</string>
+    <string name="key_no_img">no_img</string>
+    <string name="key_big_font">big_font</string>
     <string name="dialog_cancel">取消</string>
     <string name="toast_clear_cache">缓存已清除</string>
     <string name="login_by_mb">使用微博登录</string>
