@@ -115,6 +115,14 @@ public class StoryDetailBean {
     private List<String> images;
     private List<String> css;
 
+
+    public StoryDetailBean(String body, String image_source, String title, String image) {
+        this.body = body;
+        this.image_source = image_source;
+        this.title = title;
+        this.image = image;
+    }
+
     public String getBody() {
         return body;
     }

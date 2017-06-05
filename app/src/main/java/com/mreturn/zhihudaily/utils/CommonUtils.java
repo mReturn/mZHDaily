@@ -68,6 +68,24 @@ public class CommonUtils {
         return sdf.format(new Date(time * 1000));
     }
 
+    /**
+     * 获取日期，格式为：yyyy/MM/dd
+     * @param ago 相对于今天的几天前 0:今天  -1:昨天
+     * @return
+     */
+    public static String getDate(int ago) {
+
+        String format = "yyyyMMdd";
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, ago);
+        Date date = cal.getTime();
+        SimpleDateFormat sf = new SimpleDateFormat(format, Locale.getDefault());
+
+        return sf.format(date);
+    }
+
+
+
     public static void initWebView(Context context, WebView webView) {
         WebSettings webSettings = webView.getSettings();
         //设置自适应屏幕，两者合用

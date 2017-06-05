@@ -2,6 +2,7 @@ package com.mreturn.zhihudaily.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,12 @@ import android.widget.ImageView;
 
 import com.mreturn.zhihudaily.R;
 import com.mreturn.zhihudaily.app.Constant;
+import com.mreturn.zhihudaily.database.ImgDao;
 import com.mreturn.zhihudaily.model.StoriesBean;
 import com.mreturn.zhihudaily.ui.detail.HomeStoryDetailActivity;
 import com.mreturn.zhihudaily.ui.detail.ThemeStoryDetailActivity;
 import com.mreturn.zhihudaily.utils.ImageLoader;
+import com.mreturn.zhihudaily.utils.NetUtils;
 
 import java.util.List;
 
@@ -59,8 +62,19 @@ public class HomeStoriesAdapter extends BaseStoryRecycleAdapter<StoriesBean> {
                 case TYPE_ITEM:
                     setRootListener(holder, story);
                     setTitle(holder, story);
-                    ImageLoader.display(mContext, (ImageView) holder.getView(R.id.iv_thumb),
-                            story.getImages().get(0));
+                    if (!NetUtils.isNetAvailable(mContext)){
+                        ImgDao imgDao = new ImgDao();
+                        String imgUri = imgDao.getImgUri(story.getImages().get(0));
+                        if (TextUtils.isEmpty(imgUri)){
+                            ImageLoader.display(mContext, (ImageView) holder.getView(R.id.iv_thumb),
+                                    story.getImages().get(0));
+                        }else {
+                            ImageLoader.display(mContext, (ImageView) holder.getView(R.id.iv_thumb),imgUri);
+                        }
+                    }else{
+                        ImageLoader.display(mContext, (ImageView) holder.getView(R.id.iv_thumb),
+                                story.getImages().get(0));
+                    }
                     holder.getView(R.id.iv_multipic).setVisibility(story.isMultipic() ?
                             View.VISIBLE : View.GONE);
                     break;

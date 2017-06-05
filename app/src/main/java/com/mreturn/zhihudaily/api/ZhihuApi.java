@@ -1,5 +1,6 @@
 package com.mreturn.zhihudaily.api;
 
+import com.mreturn.zhihudaily.app.Constant;
 import com.mreturn.zhihudaily.model.CommentBean;
 import com.mreturn.zhihudaily.model.SplashBean;
 import com.mreturn.zhihudaily.model.StoryDetailBean;
@@ -24,11 +25,11 @@ public interface ZhihuApi {
    Observable<SplashBean> getSplashData();
 
    //今日新闻
-   @GET("news/latest")
+   @GET(Constant.STORY_LATEST_URL)
    Observable<StoryListBean> getLatest();
 
    //加载更多
-   @GET("news/before/{date}")
+   @GET(Constant.STORY_BEFORE_URL+"{date}")
    Observable<StoryListBean> loadMore(@Path("date") String date);
 
    //获取某个主题日报内容列表

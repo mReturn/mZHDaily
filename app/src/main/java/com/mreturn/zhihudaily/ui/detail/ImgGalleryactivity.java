@@ -102,7 +102,7 @@ public class ImgGalleryactivity extends BaseToolBarAtivity {
 
     private void downloadImg(final String url) {
 //        url = "http://img.78dian.com/user/forum/201703/1_1488435170_86662.gif";
-        MyLog.e("download ： ",url);
+        MyLog.e("startDownload ： ",url);
         ZhihuClient.getZhihuApi().downloadFile(url)
                 .map(new Function<ResponseBody, String>() {
                     @Override
@@ -119,13 +119,13 @@ public class ImgGalleryactivity extends BaseToolBarAtivity {
                     @Override
                     public void onNext(String value) {
                         ToastShow.show("下载成功");
-                        MyLog.e("download success： ",value);
+                        MyLog.e("startDownload success： ",value);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         ToastShow.show("下载失败");
-                        MyLog.e("download fail： ",e.toString());
+                        MyLog.e("startDownload fail： ",e.toString());
                     }
 
                     @Override

@@ -81,34 +81,68 @@ public class StoryDao {
         return Collections.emptyList();
     }
 
-    public void saveStoryList(List<StoriesBean> stories, List<StoryListBean.TopStoriesBean> topStories){
+//    public void saveStoryList(List<StoriesBean> stories, List<StoryListBean.TopStoriesBean> topStories) {
+//        SQLiteDatabase database = dbHelper.getWritableDatabase();
+//        try {
+//            database.beginTransaction();
+//            database.delete(Constant.TABLE_STORY, "1=1", null);
+//            if (topStories != null && topStories.size() > 0) {
+//                for (StoryListBean.TopStoriesBean topStroy : topStories) {
+//                    ContentValues cv = new ContentValues();
+//                    cv.put(Constant.ID, topStroy.getId());
+//                    cv.put(Constant.TITLE, topStroy.getTitle());
+//                    cv.put(Constant.IMAGE, topStroy.getImage());
+//                    cv.put(Constant.TOP, 1);
+//                    long insert = database.insert(Constant.TABLE_STORY, null, cv);
+//                    if (insert <= 0) {  //error
+//                        database.endTransaction();
+//                    }
+//                }
+//            }
+//            if (stories != null && stories.size() > 0) {
+//                for (StoriesBean story : stories) {
+//                    ContentValues cv = new ContentValues();
+//                    cv.put(Constant.ID, story.getId());
+//                    cv.put(Constant.TITLE, story.getTitle());
+//                    cv.put(Constant.IMAGE, story.getImages().get(0));
+//                    cv.put(Constant.DATE, story.getDate());
+//                    cv.put(Constant.TOP, 0);
+//                    cv.put(Constant.MULTI_PIC, story.isMultipic() ? 1 : 0);
+//                    cv.put(Constant.READ, story.isRead() ? 1 : 0);
+//                    long insert = database.insert(Constant.TABLE_STORY, null, cv);
+//                    if (insert <= 0) {
+//                        database.endTransaction();
+//                    }
+//                }
+//            }
+//            database.setTransactionSuccessful();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            database.endTransaction();
+//            database.close();
+//        }
+//    }
+
+    public void saveStories(List<StoriesBean> stories) {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         try {
             database.beginTransaction();
-            database.delete(Constant.TABLE_STORY,"1=1",null);
-            for (StoryListBean.TopStoriesBean topStroy:topStories){
-                ContentValues cv = new ContentValues();
-                cv.put(Constant.ID,topStroy.getId());
-                cv.put(Constant.TITLE,topStroy.getTitle());
-                cv.put(Constant.IMAGE,topStroy.getImage());
-                cv.put(Constant.TOP,1);
-                long insert = database.insert(Constant.TABLE_STORY,null,cv);
-                if (insert <= 0){  //error
-                    database.endTransaction();
-                }
-            }
-            for (StoriesBean story:stories){
-                ContentValues cv = new ContentValues();
-                cv.put(Constant.ID,story.getId());
-                cv.put(Constant.TITLE,story.getTitle());
-                cv.put(Constant.IMAGE,story.getImages().get(0));
-                cv.put(Constant.DATE,story.getDate());
-                cv.put(Constant.TOP,0);
-                cv.put(Constant.MULTI_PIC,story.isMultipic()?1:0);
-                cv.put(Constant.READ,story.isRead()?1:0);
-                long insert = database.insert(Constant.TABLE_STORY,null,cv);
-                if (insert <= 0){
-                    database.endTransaction();
+            database.delete(Constant.TABLE_STORY, "1=1", null);
+            if (stories != null && stories.size() > 0) {
+                for (StoriesBean story : stories) {
+                    ContentValues cv = new ContentValues();
+                    cv.put(Constant.ID, story.getId());
+                    cv.put(Constant.TITLE, story.getTitle());
+                    cv.put(Constant.IMAGE, story.getImages().get(0));
+                    cv.put(Constant.DATE, story.getDate());
+                    cv.put(Constant.TOP, 0);
+                    cv.put(Constant.MULTI_PIC, story.isMultipic() ? 1 : 0);
+                    cv.put(Constant.READ, story.isRead() ? 1 : 0);
+                    long insert = database.insert(Constant.TABLE_STORY, null, cv);
+                    if (insert <= 0) {
+                        database.endTransaction();
+                    }
                 }
             }
             database.setTransactionSuccessful();

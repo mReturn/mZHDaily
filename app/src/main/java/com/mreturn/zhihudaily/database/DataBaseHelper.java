@@ -24,7 +24,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + "("
                 + Constant.UID + " integer primary key autoincrement,"
                 + Constant.ID + " int,"
-                + Constant.TITLE + " text，"
+                + Constant.TITLE + " text,"
                 + Constant.IMAGE + " text,"
                 + Constant.DATE + " text,"
                 + Constant.MULTI_PIC + " int,"
@@ -53,10 +53,31 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + Constant.MULTI_PIC + " int"
                 + ")";
 
+        String createStoryDetailTable = "CREATE TABLE "
+                + Constant.TABLE_DETAIL
+                + "("
+                + Constant.UID + " integer primary key autoincrement,"
+                + Constant.DETAIL_ID + " int,"
+                + Constant.DETAIL_CONTENT + " text,"
+                + Constant.TITLE + " text,"
+                + Constant.IMAGE + " text,"
+                + Constant.IMG_SOURCE + " text"
+                + ")";
+
+        String createImgTable = "CREATE TABLE "
+                + Constant.TABLE_IMG
+                + "("
+                + Constant.UID + " integer primary key autoincrement,"
+                + Constant.IMAGE + " text,"
+                + Constant.IMG_URI + " text"
+                + ")";
+
         sqLiteDatabase.execSQL(createStoryTable);
         sqLiteDatabase.execSQL(createReadTAble);
         sqLiteDatabase.execSQL(createpraiseTable);
         sqLiteDatabase.execSQL(createCollectTable);
+        sqLiteDatabase.execSQL(createStoryDetailTable);
+        sqLiteDatabase.execSQL(createImgTable);
     }
 
     @Override

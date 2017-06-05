@@ -11,8 +11,9 @@ public class Constant {
     //api
     public static final String BASE_URL = "http://news-at.zhihu.com/api/4/";
     public static final String BASE_SPLASH_URL = "http://news-at.zhihu.com/api/7/";
+    public static final String STORY_LATEST_URL = "news/latest";
+    public static final String STORY_BEFORE_URL = "news/before/";
     public static final String EDITOR_DETAIL_URL = BASE_URL+"editor/%s/profile-page/android";
-    public static final String EDITOR_URL = "editor/%s/profile-page/android";
 
     //sharedpreference
     public static final String IS_APP_OPENED = "is_app_opened";
@@ -37,6 +38,12 @@ public class Constant {
     public static final String TABLE_READ = "t_read";
     public static final String TABLE_COLLECT = "t_collect";
     public static final String TABLE_PRAISE = "t_praise";
+    public static final String TABLE_DETAIL = "t_detail";
+    public static final String TABLE_IMG = "t_img";
+    public static final String DETAIL_ID = "detail_id";
+    public static final String DETAIL_CONTENT= "detail_content";
+    public static final String IMG_SOURCE= "img_source";
+    public static final String IMG_URI= "img_uri";
     public static final String UID = "uid";
     public static final String ID = "id";
     public static final String TITLE = "title";
@@ -64,5 +71,5 @@ public class Constant {
 
     //sd
     public static final String SD_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() ;
-    public static final String DOWNLOAD_PATH = SD_PATH+ "/_ZhiHuDaily/download/";
+    public static final String DOWNLOAD_PATH = SD_PATH+ "/_ZhiHuDaily/startDownload/";
 }

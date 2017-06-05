@@ -22,6 +22,7 @@ import com.mreturn.zhihudaily.Presenter.BasePresenter;
 import com.mreturn.zhihudaily.Presenter.StoryDetailPresenter;
 import com.mreturn.zhihudaily.R;
 import com.mreturn.zhihudaily.app.Constant;
+import com.mreturn.zhihudaily.database.ImgDao;
 import com.mreturn.zhihudaily.model.StoriesBean;
 import com.mreturn.zhihudaily.model.StoryDetailBean;
 import com.mreturn.zhihudaily.model.StoryExtraBean;
@@ -336,14 +337,14 @@ public abstract class BaseDetailActiivty extends BaseToolBarAtivity implements D
         Document doc = Jsoup.parse(html);
         Elements es = doc.getElementsByTag("img");
         for (Element e : es) {
+            String imgUrl = e.attr("src");
+            imgUrlList.add(imgUrl);
+            String src = String.format("file:///android_asset/default_pic_content_image_%s_%s.png",
+                    autoLoad ? "loading" : "startDownload",
+                    nightMode ? "dark" : "light");
+            e.attr("src", src);
+            e.attr(defaultImgAttr, imgUrl);
             if (!"avatar".equals(e.attr("class"))) {
-                String imgUrl = e.attr("src");
-                imgUrlList.add(imgUrl);
-                String src = String.format("file:///android_asset/default_pic_content_image_%s_%s.png",
-                        autoLoad ? "loading" : "download",
-                        nightMode ? "dark" : "light");
-                e.attr("src", src);
-                e.attr(defaultImgAttr, imgUrl);
                 e.attr("onclick", "onImageClick(this)");
             }
         }
@@ -357,26 +358,7 @@ public abstract class BaseDetailActiivty extends BaseToolBarAtivity implements D
         MyLog.e("detail: ","click load img");
         if (TextUtils.isEmpty(imgPath))
             return;
-        webView.post(new Runnable() {
-            @Override
-            public void run() {
-                Glide.with(BaseDetailActiivty.this).load(imgPath)
-                        .downloadOnly(new SimpleTarget<File>() {
-                            @Override
-                            public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
-                                String str = "file://" + resource.getAbsolutePath();//加载完成的图片地址
-                                try {
-                                    String[] arrayOfString = new String[2];
-                                    arrayOfString[0] = URLEncoder.encode(imgPath,"UTF-8");//旧url
-                                    arrayOfString[1] = str;
-                                    onImageLoadingComplete("onImageLoadingComplete", arrayOfString);
-                                } catch (Exception e) {
-
-                                }
-                            }
-                        });
-            }
-        });
+        loadFromNet(imgPath);
     }
 
     @JavascriptInterface
@@ -384,6 +366,27 @@ public abstract class BaseDetailActiivty extends BaseToolBarAtivity implements D
         MyLog.e("detail: ","load img");
         if (TextUtils.isEmpty(imgPath))
             return;
+        if (!NetUtils.isNetAvailable(BaseDetailActiivty.this)){
+            ImgDao imgDao = new ImgDao();
+            String imgUri = imgDao.getImgUri(imgPath);
+            if (TextUtils.isEmpty(imgUri)){
+                loadFromNet(imgPath);
+            }else {
+                String str = "file://" + imgUri;//加载完成的图片地址
+                try {
+                    String[] arrayOfString = new String[2];
+                    arrayOfString[0] = URLEncoder.encode(imgPath,"UTF-8");//旧url
+                    arrayOfString[1] = str;
+                    onImageLoadingComplete("onImageLoadingComplete", arrayOfString);
+                } catch (Exception e) {
+                }
+            }
+        }else {
+            loadFromNet(imgPath);
+        }
+    }
+
+    private void loadFromNet(final String imgPath) {
         webView.post(new Runnable() {
             @Override
             public void run() {

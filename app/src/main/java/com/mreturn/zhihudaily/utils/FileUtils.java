@@ -65,7 +65,7 @@ public class FileUtils {
 
                 return filePath;
             } catch (IOException e) {
-                MyLog.e("download ex0: ",e.toString());
+                MyLog.e("startDownload ex0: ",e.toString());
                 return null;
             } finally {
                 if (inputStream != null) {
@@ -77,7 +77,7 @@ public class FileUtils {
                 }
             }
         } catch (IOException e) {
-            MyLog.e("download ex1: ",e.toString());
+            MyLog.e("startDownload ex1: ",e.toString());
             return null;
         }
     }

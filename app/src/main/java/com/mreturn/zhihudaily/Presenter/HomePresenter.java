@@ -69,6 +69,7 @@ public class HomePresenter extends BaseStoryPresenter {
 
     @SuppressWarnings("unchecked")
     public void loadMore(String date) {
+        MyLog.e("load more","-------");
         homeView.setLoadMoreViewShow(true);
         ZhihuClient.getZhihuApi().loadMore(date)
                 .doOnNext(mConsumer)

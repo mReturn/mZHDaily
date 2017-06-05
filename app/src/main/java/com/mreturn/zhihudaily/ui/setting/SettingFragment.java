@@ -63,7 +63,7 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
             case "notice":
                 AlertDialog.Builder noticeBuilder = new AlertDialog.Builder(getActivity());
                 noticeBuilder.setTitle("声明")
-                        .setMessage("本软件仅作学习之用，如被告知侵权将立即停止使用")
+                        .setMessage("本软件仅作学习之用，如有侵权，深表歉意")
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {

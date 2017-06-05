@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mreturn.zhihudaily.Presenter.BasePresenter;
+import com.mreturn.zhihudaily.Presenter.OffLineCachePresenter;
 import com.mreturn.zhihudaily.R;
 import com.mreturn.zhihudaily.app.Constant;
 import com.mreturn.zhihudaily.ui.BaseToolBarAtivity;
@@ -249,7 +250,8 @@ public class MainActivity extends BaseToolBarAtivity implements View.OnClickList
                 startActivity(new Intent(this, CollectActivity.class));
                 break;
             case R.id.tv_download:
-                ToastShow.show("download");
+                OffLineCachePresenter offLineCachePresenter = new OffLineCachePresenter(tvDownload);
+                offLineCachePresenter.startDownload();
                 break;
             default:
                 break;

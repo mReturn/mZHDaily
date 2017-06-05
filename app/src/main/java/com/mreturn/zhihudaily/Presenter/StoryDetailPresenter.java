@@ -1,9 +1,12 @@
 package com.mreturn.zhihudaily.Presenter;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.mreturn.zhihudaily.api.ZhihuClient;
 import com.mreturn.zhihudaily.database.CollectDao;
+import com.mreturn.zhihudaily.database.DetailDao;
+import com.mreturn.zhihudaily.database.ImgDao;
 import com.mreturn.zhihudaily.database.PraiseDao;
 import com.mreturn.zhihudaily.model.StoriesBean;
 import com.mreturn.zhihudaily.model.StoryDetailBean;
@@ -29,7 +32,7 @@ public class StoryDetailPresenter extends BasePresenter {
         this.detailView = detailView;
     }
 
-    public void getStoryDetail(int storyId){
+    public void getStoryDetail(final int storyId) {
         detailView.showLoadingView(true);
         ZhihuClient.getZhihuApi().getStoryDetail(storyId)
                 .compose(TransformUtils.<StoryDetailBean>defaultSchedulers())
@@ -48,7 +51,17 @@ public class StoryDetailPresenter extends BasePresenter {
                     @Override
                     public void onError(Throwable e) {
                         detailView.showLoadingView(false);
-                        detailView.showLoadFail();
+                        DetailDao detailDao = new DetailDao();
+                        StoryDetailBean detail = detailDao.getStoryDetail(storyId);
+                        if (detail != null) {
+                            ImgDao imgDao = new ImgDao();
+                            if (!TextUtils.isEmpty(imgDao.getImgUri(detail.getImage()))){
+                                detail.setImage(imgDao.getImgUri(detail.getImage()));
+                            }
+                            detailView.showDetail(detail);
+                        } else {
+                            detailView.showLoadFail();
+                        }
                     }
 
                     @Override
@@ -58,7 +71,7 @@ public class StoryDetailPresenter extends BasePresenter {
                 });
     }
 
-    public void getStoryExtra(int storyId){
+    public void getStoryExtra(int storyId) {
         ZhihuClient.getZhihuApi().getStoryExtra(storyId)
                 .compose(TransformUtils.<StoryExtraBean>defaultSchedulers())
                 .subscribe(new Observer<StoryExtraBean>() {
@@ -86,7 +99,7 @@ public class StoryDetailPresenter extends BasePresenter {
     //-------------------------------collect---------------------------------------
     public void collectStory(Context context, StoriesBean story, String type) {
         CollectDao collectDao = new CollectDao(context);
-        boolean success = collectDao.save(story,type);
+        boolean success = collectDao.save(story, type);
         if (success) {
             detailView.setCollectState(true);
         } else {
@@ -110,23 +123,23 @@ public class StoryDetailPresenter extends BasePresenter {
         return collectDao.getCollectList();
     }
 
-    public List<Integer> getCollectIdList(Context context){
-        CollectDao collectDao =  new CollectDao(context);
+    public List<Integer> getCollectIdList(Context context) {
+        CollectDao collectDao = new CollectDao(context);
         return collectDao.getCollectIdList();
     }
 
     //------------------------------------praise----------------------------------
-    public void savePraise(Context context,int storyId){
+    public void savePraise(Context context, int storyId) {
         PraiseDao praiseDao = new PraiseDao(context);
         praiseDao.save(storyId);
     }
 
-    public void removePraise(Context context,int storyID){
+    public void removePraise(Context context, int storyID) {
         PraiseDao praiseDao = new PraiseDao(context);
         praiseDao.delete(storyID);
     }
 
-    public List<Integer> getPraiseIdList(Context context){
+    public List<Integer> getPraiseIdList(Context context) {
         PraiseDao praiseDao = new PraiseDao(context);
         return praiseDao.getPraisetIdLis();
     }

@@ -38,7 +38,6 @@ public class HomeStoryDetailActivity extends BaseDetailActiivty {
     public void showDetail(StoryDetailBean storyDetail) {
         this.storyDetail = storyDetail;
         ctbLayout.setTitle("");
-        ivTop.setVisibility(View.VISIBLE);
         tvTitle.setText(storyDetail.getTitle());
         tvSource.setText(storyDetail.getImage_source());
         ImageLoader.display(this, ivTop, storyDetail.getImage());
