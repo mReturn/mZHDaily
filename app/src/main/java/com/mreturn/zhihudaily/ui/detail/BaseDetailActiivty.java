@@ -114,6 +114,18 @@ public abstract class BaseDetailActiivty extends BaseToolBarAtivity implements D
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        webView.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        webView.onResume();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MyLog.e("detail ", "oncreate menu");
         getMenuInflater().inflate(R.menu.menu_detail, menu);

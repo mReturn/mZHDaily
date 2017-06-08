@@ -86,7 +86,7 @@ public class ZhihuClient {
                     }
                 });
                 builder.addNetworkInterceptor(REWRITE_CACHE_CONTROLINTERCEPTOR)
-                        .addNetworkInterceptor(REWRITE_CACHE_CONTROLINTERCEPTOR);
+                        .addInterceptor(REWRITE_CACHE_CONTROLINTERCEPTOR);
                 mhttpClient = builder.build();
             }
             Retrofit retrofit = new Retrofit.Builder()
@@ -123,7 +123,7 @@ public class ZhihuClient {
                     }
                 });
                 builder.addNetworkInterceptor(REWRITE_CACHE_CONTROLINTERCEPTOR)
-                        .addNetworkInterceptor(REWRITE_CACHE_CONTROLINTERCEPTOR);
+                        .addInterceptor(REWRITE_CACHE_CONTROLINTERCEPTOR);
                 mhttpClient = builder.build();
             }
             Retrofit retrofit = new Retrofit.Builder()
